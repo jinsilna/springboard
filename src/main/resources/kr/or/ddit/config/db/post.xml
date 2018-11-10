@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="post">
+		
+	<!-- 게시글 생성 -->
+	<insert id="insertPost" parameterType="postVo">
+		<selectKey keyProperty="post_no" resultType="int" order="BEFORE">
+		select post_no_SEQ.NEXTVAL from dual
+		</selectKey>
+		insert into post
+		values
+		(#{post_no}, #{post_title}, #{post_context}, 'N', sysdate,
+		#{post_board},${post_pid},#{post_user})
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="postVo">
+		update post
+		set post_title
+		= #{post_title} 
+		, post_context = #{post_context}
+		where post_no = #{post_no}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<update id="deletePost" parameterType="int">
+		update post
+		set post_rmv =
+		'Y'
+		where post_no = #{post_no}
+	</update>
+	
+	<!-- 게시글 생성  -->
+	<insert id="insertPostNo" parameterType="postVo">
+		insert into post
+		values
+		(post_no_SEQ.NEXTVAL , #{post_title}, #{post_context}, 'N', sysdate,
+		#{post_board},'',#{post_user})
+	</insert>
+	
+	<!-- 게시판 번호로 게시글 갯수 가져오기   -->
+ 	<select id="PostBoardCnt" parameterType="int" resultType="int">
+		select count(*) from post
+		where post_board = #{board_no}
+	</select> 
+	
+	<!-- 게시글 목록 뿌려주기 (페이징처리 + rnum) -->
+	<select id="selectPostBoardList" parameterType="pageVo" resultType="postVo">
+		select * from (
+			select rownum rnum , a.*
+			from
+			(SELECT post_no, LPAD('└ ', 3*(LEVEL-1),'　') || post_title,
+			post_title, post_context, post_rmv, post_date, post_board, post_pid, userid
+			FROM post
+			where post_board = #{board_no}
+			START WITH post_pid IS NULL
+			CONNECT BY
+			PRIOR post_no = post_pid) a) 
+		where rnum between #{page}*#{pageSize}-(#{pageSize}-1) and (#{page}*#{pageSize})
+	</select>
+
+
+	<!-- 게시글 번호에 따른 하나의 게시글 정보 조회 : 상세정보 -->
+	<select id="selectOnePost" parameterType="int" resultType="postVo">
+		select *
+		from post
+		where post_no = #{post_no}
+	</select>
+</mapper>

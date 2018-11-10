@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<!-- service , dao 어노테이션 스캔  -->
+	<context:annotation-config/>
+	<!-- component-scan은 기본적으로 @Controller, @Service, @Dao, @Component 
+							어노테이션을 사용한 클래스를 대상으로 spring bean으로 만든다. 
+	* 기본필터(controller, service, dao, component)를 끄고 우리가 스캔하고자하는 service, dao에 대해서만 
+		  스캔하도록 include-filter를 이용하여 설정한다. -->
+		<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
+			<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+			<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		</context:component-scan>
+	<!-- user-default-filter="false" : 기본필터를 사용하지않겠다. -->
+
+	<bean id="userDao" class="kr.or.ddit.user.dao.UserDao"/>
+	<bean id="boardDao" class="kr.or.ddit.board.dao.BoardDao"/>
+	<bean id="postDao" class="kr.or.ddit.post.dao.PostDao"/>
+</beans>
