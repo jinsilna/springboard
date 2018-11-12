@@ -6,22 +6,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.board.model.BoardVo;
 import kr.or.ddit.board.service.BoardServiceInf;
 import kr.or.ddit.post.model.PostVo;
 import kr.or.ddit.post.service.PostServiceInf;
-import kr.or.ddit.user.model.UserVo;
 import kr.or.ddit.util.model.PageVo;
-import oracle.jdbc.proxy.annotation.Methods;
 
 @Controller
 @RequestMapping("/post")
@@ -56,6 +52,7 @@ public class PostController {
 	
 		String userId = postVo.getUserId();
 		String board_name = boardVo.getBoard_name();
+		String board_no = boardVo.getBoard_no();
 		
 		List<PostVo> postList = (List<PostVo>) resultMap.get("postList");
 		int pageCnt = (int) resultMap.get("pageCnt");
@@ -63,6 +60,7 @@ public class PostController {
 		model.addAllAttributes(resultMap);
 		model.addAttribute("userId",userId);
 		model.addAttribute("board_name",board_name);
+		model.addAttribute("board_no", board_no);
 		return "postList";
 	}
 	
@@ -74,10 +72,12 @@ public class PostController {
 	 * Method 설명 : 게시글 목록(리스트) 새글작성 버튼 클릭시 jsp 화면 보이기 
 	 */
 	@RequestMapping("/postNew")
-	public String postNew(Model model, UserVo userVo , PostVo postVo) {
-	
+	public String postNew(Model model , PostVo postVo, @RequestParam(value="board_no")int board_no) {
+		// post_no 값 넣어주기
 		int post_no = postVo.getPost_no();
+		// 넘기려고 담아주기 
 		model.addAttribute("post_no",post_no);
+		model.addAttribute("post_board",board_no);
 		
 		// left.jsp 에서 게시판이름을 클릭했을때 전의 상태로 돌아가서 
 				// 새로고침 효과를 주는 것.
@@ -98,22 +98,64 @@ public class PostController {
 	@RequestMapping(value="/postNewSave",method=RequestMethod.POST)
 	public String postNewSave(PostVo postVo ,Model model) throws UnsupportedEncodingException {
 		
-		String post_title = postVo.getPost_title();
-		String post_context = postVo.getPost_context();
-		int post_no = postVo.getPost_no();
+		int insertpost = postService.insertPostNo(postVo);
 		
-		/*
-		postVo.setPost_title(post_title);
-		postVo.setPost_context(post_context);*/
-		
-		int insertpost = postService.insertPost(postVo);
-		
+		// 새로고침 효과 
 		List<BoardVo> boardUserList = boardService.boardUserList();
 		model.addAttribute("boardUserList", boardUserList);
 		
-		return "main";
+		return "postDetail";
+	}
+	
+	/**
+	 * Method : postDetail
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param model
+	 * @return
+	 * Method 설명 : 게시글 상세 가져오기
+	 */
+	@RequestMapping(value="/postDetail",method=RequestMethod.POST)
+	public String postDetail(Model model, @RequestParam(value="post_no")int post_no) {
+		
+		PostVo postVo = postService.selectOnePost(post_no);
+		model.addAttribute("postVo", postVo);
+		
+		
+		// left.jsp 계속 나오게 하는거.
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
+
+		return "postDetail";
+	}
+	
+	/**
+	 * Method : postUpdate
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * Method 설명 : 게시글 수정-->  jsp로 넘겨주기 
+	 */
+	@RequestMapping("/postUpdateView")
+	public String postUpdateView() {
+		return "postUpdate";
+	}
+	
+	
+	/**
+	 * Method : postDelete
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * Method 설명 : 게시글 수정
+	 */
+	@RequestMapping("/postUpdate")
+	public String postUpdate () {
+		
+		return "postDetail";
 	}
 }	
+
 
 
 

@@ -12,7 +12,7 @@
 		insert into post
 		values
 		(#{post_no}, #{post_title}, #{post_context}, 'N', sysdate,
-		#{post_board},${post_pid},#{post_user})
+		#{post_board},${post_pid},#{userId})
 	</insert>
 	
 	<!-- 게시글 수정 -->
@@ -37,7 +37,7 @@
 		insert into post
 		values
 		(post_no_SEQ.NEXTVAL , #{post_title}, #{post_context}, 'N', sysdate,
-		#{post_board},'',#{post_user})
+		#{post_board},'',#{userId})
 	</insert>
 	
 	<!-- 게시판 번호로 게시글 갯수 가져오기   -->

@@ -13,8 +13,22 @@ public class PostVo {
 	private int post_board;
 	private int post_pid;
 	private String userId;
+	private String post_user;
 	
 	
+	
+	public String getPost_user() {
+		return post_user;
+	}
+	public void setPost_user(String post_user) {
+		this.post_user = post_user;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public int getPost_no() {
 		return post_no;
 	}
@@ -57,18 +71,18 @@ public class PostVo {
 	public void setPost_pid(int post_pid) {
 		this.post_pid = post_pid;
 	}
-	
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+
 	public int getRnum() {
 		return rnum;
 	}
 	public void setRnum(int rnum) {
 		this.rnum = rnum;
+	}
+	@Override
+	public String toString() {
+		return "PostVo [rnum=" + rnum + ", post_no=" + post_no + ", post_title=" + post_title + ", post_context="
+				+ post_context + ", post_rmv=" + post_rmv + ", post_date=" + post_date + ", post_board=" + post_board
+				+ ", post_pid=" + post_pid + ", userId=" + userId + ", post_user=" + post_user + "]";
 	}
 	
 	

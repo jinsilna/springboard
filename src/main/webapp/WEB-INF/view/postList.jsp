@@ -42,11 +42,11 @@
 </head>
 
 
-<form  id = "frm" action="/postDetail" method="get">
-	<input type = "hidden" id = "post_no" name = "post_no"/>
-	<input type = "hidden" id = "userId" name = "${userId}"/>
-	<input type="hidden" id="post_title" name="post_title" value = "${vo.post_title}"/>
-	<input type="hidden"  id="post_context" name="post_context" value="${vo.post_context} ">
+<form  id = "frm" action="/post/postDetail" method="post">
+	<input type = "hidden" id = "post_no" name = "post_no" value="${post_no}"/>
+	<%-- <input type = "hidden" id = "userId" name = "${userId}"/>
+	<input type="hidden" id="post_title" name="post_title" value = "${post_title}"/>
+	<input type="hidden"  id="post_context" name="post_context" value="${post_context} "> --%>
 </form>
 
 
@@ -86,7 +86,10 @@
 			</table>
 		</div>
 
-		<a class="btn btn-default pull-right" href = "/post/postNew"> 새글작성 </a>
+		<form  id = "frm" action="/post/postNew" method="get">
+			<input type="hidden"  id="board_no" name="board_no" value="${board_no}">
+			<input type="submit" class="btn btn-default pull-right" value="새글작성">
+		</form>
 
 		<div class="text-center">
 			<ul class="pagination">

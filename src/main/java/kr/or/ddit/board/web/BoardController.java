@@ -86,6 +86,5 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		return "board";
 	}
-	
-	
+
 }

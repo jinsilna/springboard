@@ -13,6 +13,8 @@ import kr.or.ddit.util.model.PageVo;
 @Repository
 public class PostDao implements PostDaoInf{
 
+	
+	
 	@Resource(name="sqlSessionTemplate")
 	private SqlSessionTemplate sqlSessionTemplate;
 	
