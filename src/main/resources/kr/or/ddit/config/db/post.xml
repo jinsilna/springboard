@@ -51,7 +51,7 @@
 		select * from (
 			select rownum rnum , a.*
 			from
-			(SELECT post_no, LPAD('└ ', 3*(LEVEL-1),'　') || post_title,
+			(SELECT post_no, LPAD('└RE ', 3*(LEVEL-1),'　') || post_title,
 			post_title, post_context, post_rmv, post_date, post_board, post_pid, userid
 			FROM post
 			where post_board = #{board_no}
@@ -61,11 +61,16 @@
 		where rnum between #{page}*#{pageSize}-(#{pageSize}-1) and (#{page}*#{pageSize})
 	</select>
 
-
 	<!-- 게시글 번호에 따른 하나의 게시글 정보 조회 : 상세정보 -->
 	<select id="selectOnePost" parameterType="int" resultType="postVo">
 		select *
 		from post
 		where post_no = #{post_no}
 	</select>
+	
+	<!-- <select id="postSearch" pa>
+		select post_title 
+		from post
+		where post_title like ('%', #{post_title} , '%')
+	</select> -->
 </mapper>

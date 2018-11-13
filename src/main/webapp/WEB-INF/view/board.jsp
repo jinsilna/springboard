@@ -31,7 +31,7 @@ $(document).ready(function() {
 		<input type="hidden" id="board_no" name="board_no"/> 
 		 <input type="hidden" id="board_use" name="board_use"/> 
 		 <input type="hidden" id="board_name" name="board_name"/> 
-		 <input type="hidden" name="board_user" value="${userId}"/>
+		 <input type="hidden" name="board_user" value="${userVo.userId}"/>
 	</form>
 	<div class="container-flui2d">
 		<div class="row">

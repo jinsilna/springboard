@@ -4,13 +4,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.or.ddit.board.model.BoardVo;
-import kr.or.ddit.config.db.SqlFactoryBuilder;
 
 @Repository
 public class BoardDao implements BoardDaoInf{

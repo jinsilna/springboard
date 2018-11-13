@@ -1,21 +1,17 @@
-
-<%@page import="kr.or.ddit.board.model.BoardVo"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<%@include file="./common/basiclb.jsp"%>
-<!-- Favicon -->
-<link rel="shortcut icon" href="favicon.ico" />
-
-<!-- jQuery -->
-<!-- <script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/jquery-ui.min.js"></script>-->
-
-<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="../../favicon.ico">
+<title>writenew.jsp</title>
 <style type="text/css">
 #savebutton {
 	margin-right: 350px;
@@ -41,9 +37,12 @@
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 </style>
-
+<%-- basiclb --%>
+<%@include file="./common/basiclb.jsp"%>
+</head>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
 <script src="/SE2/js/HuskyEZCreator.js"></script>
-<script type="text/javascript">
+ <script type="text/javascript">
 	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함.
 
 	$(document).ready(function() {
@@ -99,32 +98,30 @@
 	}
 	
 </script>
-
-</head>
 <body>
 	<%-- header --%>
 	<%@include file="./common/header.jsp"%>
 	<div class="container-fluid">
 		<div class="row">
-
-
 			<%-- left --%>
 			<%@include file="./common/left.jsp"%>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			 <div class="freewritenew_wrap">
-				<h2> 수정 </h2>
+				<h2> 답글작성 </h2>
 				<hr>
-			<form action="/post/postUpdate" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
+			<form action="/post/postComment" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
 				<span>제목 : 　</span> 
-					<input type ="hidden" id ="post_no" name ="post_no" value="${postVo.post_no}"/>
-					<input type="text" id="post_title" name="post_title" value= "${postVo.post_title }"/>
+					<input type="text" id="post_title" name="post_title" />
+					<input type="hidden" name="post_no" value="${post_no}"/>
+					<input type="hidden" name="userId" value="${userVo.userId}"/>
+					<input type="hidden" name="post_board" value="${post_board}"/>
+					<input type="hidden" name="post_pid" value="${post_pid}"/>
 				<hr>
 				<div id="fileDiv">
-					<input type="file" class="fileInput" id="inputId" name="postFile"  />
+					<input type="file" class="fileInput" id="inputId" name="postFile" />
 				</div><br> 	
-				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"> "${postVo.post_context }"</textarea>
-				<hr>
-				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="수정 저장" />
+				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
+				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />
 				</form>
 				</div>
 			</div>
@@ -132,4 +129,5 @@
 	</div>
 </head>
 </body>
+
 </html>

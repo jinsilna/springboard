@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.board.model.BoardVo;
 import kr.or.ddit.board.service.BoardServiceInf;
+import kr.or.ddit.commentary.model.CommentaryVo;
+import kr.or.ddit.commentary.service.CommentaryServiceInf;
 import kr.or.ddit.post.model.PostVo;
 import kr.or.ddit.post.service.PostServiceInf;
 import kr.or.ddit.util.model.PageVo;
 
+/**
+ * PostController.java
+ *
+ * @author pc07
+ * @version 1.0
+ * @see
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ * 수정자 수정내용
+ * ------ ------------------------
+ * pc07 최초 생성
+ *
+ * </pre>
+ */
+/**
+ * PostController.java
+ *
+ * @author pc07
+ * @version 1.0
+ * @see
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ * 수정자 수정내용
+ * ------ ------------------------
+ * pc07 최초 생성
+ *
+ * </pre>
+ */
 @Controller
 @RequestMapping("/post")
 public class PostController {
@@ -29,7 +64,9 @@ public class PostController {
 	@Resource(name="boardService")
 	private BoardServiceInf boardService;
 	
-	
+	@Resource(name="commentaryService")
+	private CommentaryServiceInf commentaryService;
+
 	/**
 	 * Method : postBoardList
 	 * 작성자 : pc07
@@ -87,7 +124,7 @@ public class PostController {
 		return "postNew";
 	}
 	
-	/**
+	/**	
 	 * Method : postNewSave
 	 * 작성자 : pc07
 	 * 변경이력 :
@@ -115,12 +152,14 @@ public class PostController {
 	 * @return
 	 * Method 설명 : 게시글 상세 가져오기
 	 */
-	@RequestMapping(value="/postDetail",method=RequestMethod.POST)
+	@RequestMapping(value="/postDetail",method=RequestMethod.GET)
 	public String postDetail(Model model, @RequestParam(value="post_no")int post_no) {
 		
 		PostVo postVo = postService.selectOnePost(post_no);
 		model.addAttribute("postVo", postVo);
 		
+		List<CommentaryVo> commList = commentaryService.selectPostComment(post_no);
+		model.addAttribute("commList",commList);
 		
 		// left.jsp 계속 나오게 하는거.
 		List<BoardVo> boardUserList = boardService.boardUserList();
@@ -137,7 +176,14 @@ public class PostController {
 	 * Method 설명 : 게시글 수정-->  jsp로 넘겨주기 
 	 */
 	@RequestMapping("/postUpdateView")
-	public String postUpdateView() {
+	public String postUpdateView(Model model, @RequestParam(value="post_no")int post_no) {
+		
+		PostVo postVo = postService.selectOnePost(post_no);
+		model.addAttribute("postVo", postVo);
+		
+		// 새로고침 효과 
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
 		return "postUpdate";
 	}
 	
@@ -148,12 +194,107 @@ public class PostController {
 	 * 변경이력 :
 	 * @return
 	 * Method 설명 : 게시글 수정
+	 *				 Model 객체 값을 넣어줄때 사용한다. 	
 	 */
-	@RequestMapping("/postUpdate")
-	public String postUpdate () {
+
+	@RequestMapping(value="/postUpdate",method=RequestMethod.POST)
+	public String postUpdate(Model model, PostVo postVo) {
+		
+		// update
+		int postUpdate = postService.updatePost(postVo);
+		
+		// 새로고침 효과
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
+		
+		// 상세화면으로 넘겨준다.
+		return "postDetail";
+		
+	}
+	
+	/**
+	 * Method : postDelete
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * GET 방식으로 온다.
+	 * Method 설명 : 게시글 삭제 --
+	 * 				 로그인 한 아이디와 post입력한 아이디가 동일하면 
+	 * 				 삭제버튼을 누를수 있고, 동일한 사람이 눌렀을경우 실제로 삭제가 되는게 아니고 
+	 * 				 '삭제되었습니다.' 글이 나오게 
+	 */
+	@RequestMapping("/postDelete")
+	public String postDelete(Model model ,@RequestParam(value="post_no")int post_no
+									,@RequestParam(value="post_pid")int post_pid) {
+		
+		int postDelete = postService.deletePost(post_no);		
+		// 새로고침 효과
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
+		
+		return "postDetail";
+		
+	}
+	
+	/**
+	 * Method : postSearch
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * Method 설명 : 검색 기능 
+	 * ********************* 아직 구현하지 못했음.********************************
+	 */
+	@RequestMapping(value="/postSearch",method=RequestMethod.GET)
+	public String postSearch() {
+		
+		return"";
+	}
+	/******************************************************************************/
+	
+	/**
+	 * Method : postComment
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * Method 설명 : 게시글 답글 jsp 로 넘겨주는곳.
+	 */
+	@RequestMapping("/postCommentView")
+	public String postCommentView(Model model ,PostVo postVo ,HttpServletRequest request) {
+		
+		int post_no = Integer.parseInt(request.getParameter("post_no"));
+		int post_board = Integer.parseInt(request.getParameter("post_board"));
+		int post_pid = Integer.parseInt(request.getParameter("post_pid"));
+		
+		model.addAttribute("post_no", post_no);
+		model.addAttribute("post_board", post_board);
+		model.addAttribute("post_pid", post_pid);
+		
+		return "postCommNew";
+	}
+	
+	/**
+	 * Method : postComment
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param commentaryVo
+	 * @return
+	 * Method 설명 : 게시글 답글 생성부분 detail화면으로 간다.
+	 */  
+	@RequestMapping(value="/postComment",method=RequestMethod.POST)
+	public String postComment(Model model ,@RequestParam(value="post_no")int post_no
+										,@RequestParam(value="post_pid")int post_pid
+									,PostVo postVo,CommentaryVo commentaryVo ) {
+		
+		int insertpost = postService.insertPostNo(postVo);
+		
+		// 새로고침 효과 
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
 		
 		return "postDetail";
 	}
+	
+	
 }	
 
 

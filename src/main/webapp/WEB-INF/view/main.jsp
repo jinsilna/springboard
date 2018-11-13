@@ -27,8 +27,9 @@
 
 
 				<div class="blog-header">
-					<h1 class="blog-title">${userId}님 안녕하세요~~ </h1>
-					<p class="lead blog-description"> 게시판 만들기 프로젝트 </p>
+					<p class="lead blog-description">${userVo.userId}님 안녕하세요~~</p>
+					<p class="lead blog-description"> NATRUE </p>
+					<p class="lead blog-description"> spring 게시판 만들기 프로젝트 </p>
 				</div>
 
 				<div class="row">
@@ -36,10 +37,8 @@
 					<div class="col-sm-8 blog-main">
 
 						<div class="blog-post">
-							<h2 class="blog-post-title">BOARD</h2>
-							<p class="blog-post-meta">2018.10.18, room 203 NATRUE</p>
+							<p class="blog-post-meta">2018.11/13, room 203 NATRUE</p>
 
-							<p> 자유롭게 꾸미기 </p>
 							</ul>
 						</div>
 					</div>

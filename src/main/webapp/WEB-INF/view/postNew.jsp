@@ -113,7 +113,7 @@
 				<span>제목 : 　</span> 
 					<input type="text" id="post_title" name="post_title" />
 					<input type="hidden" name="post_no" value="${post_no}"/>
-					<input type="hidden" name="userId" value="${userId}"/>
+					<input type="hidden" name="userId" value="${userVo.userId}"/>
 					<input type="hidden" name="post_board" value="${post_board}"/>
 				<hr>
 				<div id="fileDiv">

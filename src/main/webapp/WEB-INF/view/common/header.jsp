@@ -29,10 +29,10 @@
                class="icon-bar"></span> <span class="icon-bar"></span> <span
                class="icon-bar"></span>
          </button>
-         <a class="navbar-brand" href="/main.jsp">natrue Board</a>
+         <a class="navbar-brand" href="/user/main">natrue Board</a>
          <a class="navbar-brand" href="#">
-            <c:if test="${user.name != null}">
-             ${user.name }님 안녕하세요.
+            <c:if test="${userVo.name != null}">
+             ${userVo.name }님 안녕하세요.
              </c:if>
          </a>
       </div>

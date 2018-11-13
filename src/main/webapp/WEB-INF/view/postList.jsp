@@ -24,6 +24,10 @@
 	.userClick{
 		cursor : pointer;
 	}
+	.search{
+		text-align: center;
+		
+	}
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -42,11 +46,8 @@
 </head>
 
 
-<form  id = "frm" action="/post/postDetail" method="post">
+<form  id = "frm" action="/post/postDetail" method="get">
 	<input type = "hidden" id = "post_no" name = "post_no" value="${post_no}"/>
-	<%-- <input type = "hidden" id = "userId" name = "${userId}"/>
-	<input type="hidden" id="post_title" name="post_title" value = "${post_title}"/>
-	<input type="hidden"  id="post_context" name="post_context" value="${post_context} "> --%>
 </form>
 
 
@@ -118,6 +119,13 @@
   				 		 </li>
 						</ul>
 					</div>
+					 <form class = "search" action="/post/postSearch" method="get">
+						<div>
+							<label> 제목 </label>　　
+							<input type="text" >
+							<button type="submit" class="btn btn-default">검색하기</button>  
+						</div>
+					 </form> 
 				</div>
 			</div>
 			</div>

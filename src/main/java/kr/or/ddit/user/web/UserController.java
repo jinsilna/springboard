@@ -43,6 +43,18 @@ public class UserController {
 		return "login/login";		
 	}	
 	
+	/**
+	 * Method : main
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * Method 설명 : main 화면 
+	 */
+	@RequestMapping("/main")
+	public String main() {
+		return "main";
+	}
+	
 	
 	/**
 	 * Method : loginProcess
@@ -75,7 +87,7 @@ public class UserController {
 			//model.addAttribute("userId",userId);
 			
 			HttpSession session = request.getSession();
-			session.setAttribute("userId", userId);
+			session.setAttribute("userVo", userVo);
 			
 			// return 다음엔 viewname을 쓰면된다
 			List<BoardVo> boardUserList = boardService.boardUserList();

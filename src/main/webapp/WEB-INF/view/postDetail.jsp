@@ -13,6 +13,9 @@
 	margin-left: 200px;
 	border: 1px solid #e3e5e8;
 }
+.commlist{
+	text-align: center;
+}
 
 #comment {
 	width: 500px;
@@ -59,7 +62,7 @@
 			<%@ include file="./common/left.jsp"%>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<form class="form-horizontal" role="form" action="/commentServlet" method="post">
+				<form  action="/commentary/commentaryInsert" method="post" class="form-horizontal" role="form">
 					<div class="form-group">
 						<label for="userNm" class="col-sm-2 control-label">제목</label>
 						<label for="userNm" id="title" class="col-sm-2 control-label">${postVo.post_title}</label>
@@ -86,54 +89,57 @@
 						</div>
 					</div>
 					<hr>
-					<div class="form-group">.
-						<label for="pass" class="col-sm-2 control-label">댓글</label> 
-						
+					<div class="form-group">
+						<label for="pass" class="col-sm-2 control-label">댓글</label>
 						<input type="text" id="comment" name="comment" value="">
-						<input type="hidden" name="postNo" value="${postVo.post_no}">
-		
-						<button type="submit" id="commentary"class="btn btn-default">등록</button>
+						<input type="hidden" name="post_no" value="${postVo.post_no}">
+						<%-- <input type="hidden" name="comm_context" value="${comm_context}"> --%>
+						<input type="hidden" name="comm_user" value="${userVo.userId}">
+						<input type="submit" id="commentary" value ="등록" class="btn btn-default"/>
 						<div class="col-sm-10">
 							<label class="control-label"></label>
 						</div>
 					</div>
+				</form>
 					<%-- 
+						<!-- <label for="pass" class="col-sm-2 control-label">댓글</label> -->
 						 상세 구현 계획 : 댓글이 달린만큼 라벨로 댓글 띄워주기
 					--%>
-					<c:forEach items="${commentList}" var="comm">
-					
-					<div class="form-group">
-						<!-- <label for="pass" class="col-sm-2 control-label">댓글</label> -->
-						<div class="col-sm-10">
-							<label class="control-label" id="commen">${comm.comm_user} : </label>
-							<label class="control-label" id="commens">${comm.comm_context}</label>
+					<hr>
+					<form class = "commlist" >
+					<c:forEach items="${commList}" var="comm">					
+						<div class="form-group">
+							<div class="col-sm-10">
+						<label class="control-label" id="commens">${comm.comm_context}</label>
+							</div>
 						</div>
-					</div>
 					</c:forEach> 
+					</form>
 					<br>
 
-				</form>
 				
 					<div class="form-group">
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								 
-								<c:if test="${user.userId==postVo.post_user}">
+								<c:if test="${userVo.userId==postVo.userId}">
 								<form class="form" action="/post/postUpdateView" method="get">
-									<input type="hidden" name="postNo" value="${postVo.post_no}">
-									<input type="hidden" name="postBoard" value="${postVo.post_board}">
+									<input type="hidden" name="post_no" value="${postVo.post_no}">
+									<input type="hidden" name="post_board" value="${postVo.post_board}">
 									<button type="submit" class="btn btn-default">수정</button>
 								</form>
+								
 								<form class="form" action="/post/postDelete" method="get">
-									<input type="hidden" name="postNum" value="${postVo.post_no}">
-									<input type="hidden" name="postBoard" value="${postVo.post_board}">
+									<input type="hidden" name="post_no" value="${postVo.post_no}">
+									<input type="hidden" name="post_board" value="${postVo.post_board}">
 									<button type="submit" class="btn btn-default">삭제</button>
 								</form>
 								</c:if>
 
-								<form  class="form" action="/postCommentServlet" method="get">
-									<input type="hidden" name="postNumber" value="${postVo.post_no}">
-									<input type="hidden" name="postBoard" value="${postVo.post_board}">
+								<form  class="form" action="/post/postCommentView" method="get">
+									<input type="hidden" name="post_no" value="${postVo.post_no}">
+									<input type="hidden" name="post_board" value="${postVo.post_board}">
+									<input type="hidden" name="post_pid" value="${postVo.post_pid}">
 									<button type="submit" class="btn btn-default">답글</button>
 								</form>
 							</div>
