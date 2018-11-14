@@ -65,7 +65,6 @@ public class BoardController {
 		String board_no = boardVo.getBoard_no();
 
 		// 게시판 생성 부분
-		// 게시판 아이디가 DB에있는 게시판 아이디랑 다르면 insert
 		if(board_no.equals("")){
 			int insertboard = boardService.insertBoardList(boardVo);
 			

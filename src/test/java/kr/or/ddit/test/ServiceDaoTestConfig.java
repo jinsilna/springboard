@@ -19,9 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 // service, dao에 대한 설정파일만 필요하다.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= {"classpath:kr/or/ddit/config/spring/root-context.xml",
-									"classpath:kr/or/ddit/config/spring/datasource-context.xml",
-									"classpath:kr/or/ddit/config/spring/transaction-context.xml",
-									"classpath:kr/or/ddit/config/spring/batch-context.xml"})
+									"classpath:kr/or/ddit/config/spring/datasource-context.xml"})
 public class ServiceDaoTestConfig {
 	@Resource(name="datasource")
 	private DataSource datasource;
@@ -30,10 +28,10 @@ public class ServiceDaoTestConfig {
 	public void rangerSetup() {
 		//  데이터 초기화
 		//  delete query 호출 --> sql 스크립트를 실행해주는 녀석 
-		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+		/*ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		populator.addScript(new ClassPathResource("kr/or/ddit/config/db/dbInit.sql"));
 		populator.setContinueOnError(false);
-		DatabasePopulatorUtils.execute(populator,datasource);
+		DatabasePopulatorUtils.execute(populator,datasource);*/
 	}
 	
 	@Ignore   // 불필요한 파일을 skip

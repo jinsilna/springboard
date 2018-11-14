@@ -16,12 +16,39 @@
 		<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
 			<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		</context:component-scan>
-
+		
+		
+		<!-- view resolver -->
+		<bean class ="org.springframework.web.servlet.view.BeanNameViewResolver">
+			<property name="order" value="0"/>
+		</bean>
+	
+			<!-- tiles view resolver -->
+		<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+			<property name="order" value="1"/>
+			<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+		</bean>
+		
+				
+		<!-- tiles configurer 위치를 설정  -->
+		<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+			<property name="definitions">
+				<list>
+					<value>classpath:kr/or/ddit/config/tiles/tiles-config.xml</value>
+				</list>
+			</property>
+		</bean>
+		<!-- =============================================================================================== -->
 		<!-- prefix : 접두사 / suffix : 접미어 -->
 		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="order" value="2"/>
 			<property name="prefix" value="/WEB-INF/view/"/>
 			<property name="suffix" value=".jsp"/>
 		</bean>
+		
+			<!-- json 처리용 view -->
+		<bean id ="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"></bean>
+		
 </beans>
 
 

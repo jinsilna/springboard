@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,34 +99,25 @@
 	
 </script>
 <body>
-	<%-- header --%>
-	<%@include file="./common/header.jsp"%>
-	<div class="container-fluid">
-		<div class="row">
-			<%-- left --%>
-			<%@include file="./common/left.jsp"%>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-			 <div class="freewritenew_wrap">
-				<h2> 답글작성 </h2>
-				<hr>
-			<form action="/post/postComment" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
-				<span>제목 : 　</span> 
-					<input type="text" id="post_title" name="post_title" />
-					<input type="hidden" name="post_no" value="${post_no}"/>
-					<input type="hidden" name="userId" value="${userVo.userId}"/>
-					<input type="hidden" name="post_board" value="${post_board}"/>
-					<input type="hidden" name="post_pid" value="${post_pid}"/>
-				<hr>
-				<div id="fileDiv">
-					<input type="file" class="fileInput" id="inputId" name="postFile" />
-				</div><br> 	
-				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
-				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />
-				</form>
-				</div>
+
+		 <div class="freewritenew_wrap">
+			<h2> 답글작성 </h2>
+			<hr>
+		<form action="/post/postComment" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
+			<span>제목 : 　</span> 
+				<input type="text" id="post_title" name="post_title" />
+				<input type="hidden" name="userId" value="${userVo.userId}"/>
+				<input type="hidden" name="post_board" value="${postVo.post_board}"/>
+				<input type="hidden" name="post_no" value="${postVo.post_no}"/>
+					<input type="hidden" name="post_pid" value="${postVo.post_pid}">
+			<hr>
+			<div id="fileDiv">
+				<input type="file" class="fileInput" id="inputId" name="postFile" />
+			</div><br> 	
+			<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
+			<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />
+			</form>
 			</div>
-		</div>
-	</div>
 </head>
 </body>
 

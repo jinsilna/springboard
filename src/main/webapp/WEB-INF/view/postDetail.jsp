@@ -5,7 +5,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <head>
 <%@include file="./common/basiclb.jsp"%>
 <style type="text/css">
@@ -55,99 +55,94 @@
 </head>
 
 <body>
-	<%@ include file="./common/header.jsp"%>
-	<div class="container-fluid">
-		<div class="row">
-			<%-- left --%>
-			<%@ include file="./common/left.jsp"%>
+<div class="col-sm-8 blog-main">
+<form  action="/commentary/commentaryInsert" method="post" class="form-horizontal" role="form">
+	<div class="form-group">
+		<label for="userNm" class="col-sm-2 control-label">제목</label>
+		<label for="userNm" id="title" class="col-sm-2 control-label">${postVo.post_title}</label>
+		<div class="col-sm-10">
+		</div>
+	</div>
+	<hr>
+	<div class="form-group">
+		<label for="userNm" class="col-sm-2 control-label">내용</label> <br>
+		<br>
+		<div class="col-sm-10">
+			<label class="control-label" id="context">${postVo.post_context}</label>
+		</div>
+	</div>
+	<hr>
+	<div class="form-group">
+		<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
+		<c:forEach items="${attachList}" var="attach">
+			<%-- <label class="control-label">${attach.attach_name}</label> --%> 
+			<a href="${attach.attach_name}">${attach.attach_name}</a>
+			<br>
+		</c:forEach>
+		<div class="col-sm-10">
+		</div>
+	</div>
+	<hr>
+	<div class="form-group">
+		<label for="pass" class="col-sm-2 control-label">댓글</label>
+		<hr>
+		　　　<input type="text" id="comment" name="comment" value="">
+		<input type="hidden" name="post_no" value="${postVo.post_no}">
+		<%-- <input type="hidden" name="comm_context" value="${comm_context}"> --%>
+		<input type="hidden" name="comm_user" value="${userVo.userId}">
+		<hr>
+		<input type="submit" id="commentary" value ="등록" class="btn btn-default"/>
+		<div class="col-sm-10">
+			<label class="control-label"></label>
+		</div>
+	</div>
+</form>
 
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<form  action="/commentary/commentaryInsert" method="post" class="form-horizontal" role="form">
-					<div class="form-group">
-						<label for="userNm" class="col-sm-2 control-label">제목</label>
-						<label for="userNm" id="title" class="col-sm-2 control-label">${postVo.post_title}</label>
-						<div class="col-sm-10">
-						</div>
-					</div>
-					<hr>
-					<div class="form-group">
-						<label for="userNm" class="col-sm-2 control-label">내용</label> <br>
-						<br>
-						<div class="col-sm-10">
-							<label class="control-label" id="context">${postVo.post_context}</label>
-						</div>
-					</div>
-					<hr>
-					<div class="form-group">
-						<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
-						<c:forEach items="${attachList}" var="attach">
-							<%-- <label class="control-label">${attach.attach_name}</label> --%> 
-							<a href="${attach.attach_name}">${attach.attach_name}</a>
-							<br>
-						</c:forEach>
-						<div class="col-sm-10">
-						</div>
-					</div>
-					<hr>
-					<div class="form-group">
-						<label for="pass" class="col-sm-2 control-label">댓글</label>
-						<input type="text" id="comment" name="comment" value="">
-						<input type="hidden" name="post_no" value="${postVo.post_no}">
-						<%-- <input type="hidden" name="comm_context" value="${comm_context}"> --%>
-						<input type="hidden" name="comm_user" value="${userVo.userId}">
-						<input type="submit" id="commentary" value ="등록" class="btn btn-default"/>
-						<div class="col-sm-10">
-							<label class="control-label"></label>
-						</div>
-					</div>
-				</form>
-					<%-- 
-						<!-- <label for="pass" class="col-sm-2 control-label">댓글</label> -->
-						 상세 구현 계획 : 댓글이 달린만큼 라벨로 댓글 띄워주기
-					--%>
-					<hr>
-					<form class = "commlist" >
-					<c:forEach items="${commList}" var="comm">					
-						<div class="form-group">
-							<div class="col-sm-10">
-						<label class="control-label" id="commens">${comm.comm_context}</label>
-							</div>
-						</div>
-					</c:forEach> 
-					</form>
-					<br>
 
-				
-					<div class="form-group">
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								 
-								<c:if test="${userVo.userId==postVo.userId}">
-								<form class="form" action="/post/postUpdateView" method="get">
-									<input type="hidden" name="post_no" value="${postVo.post_no}">
-									<input type="hidden" name="post_board" value="${postVo.post_board}">
-									<button type="submit" class="btn btn-default">수정</button>
-								</form>
-								
-								<form class="form" action="/post/postDelete" method="get">
-									<input type="hidden" name="post_no" value="${postVo.post_no}">
-									<input type="hidden" name="post_board" value="${postVo.post_board}">
-									<button type="submit" class="btn btn-default">삭제</button>
-								</form>
-								</c:if>
-
-								<form  class="form" action="/post/postCommentView" method="get">
-									<input type="hidden" name="post_no" value="${postVo.post_no}">
-									<input type="hidden" name="post_board" value="${postVo.post_board}">
-									<input type="hidden" name="post_pid" value="${postVo.post_pid}">
-									<button type="submit" class="btn btn-default">답글</button>
-								</form>
-							</div>
-						</div>
-						<div class="col-sm-10"></div>
-					</div>
+	<%-- 
+		<!-- <label for="pass" class="col-sm-2 control-label">댓글</label> -->
+		 상세 구현 계획 : 댓글이 달린만큼 라벨로 댓글 띄워주기
+	--%>
+	<form class = "commlist" >
+	<c:forEach items="${commList}" var="comm">					
+		<div class="form-group">
+			<div class="col-sm-10">
+		<label class="control-label" id="commens">${comm.comm_context}</label>
 			</div>
 		</div>
+	</c:forEach> 
+	</form>
+	<hr>
+	<br>
+</div>	
+
+	<div class="form-group">
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				 <hr>
+				<c:if test="${userVo.userId==postVo.userId}">
+				<form class="form" action="/post/postUpdateView" method="get">
+					<input type="hidden" name="post_no" value="${postVo.post_no}">
+					<input type="hidden" name="post_board" value="${postVo.post_board}">
+					<button type="submit" class="btn btn-default">수정</button>
+				</form>
+				
+				<form class="form" action="/post/postDelete" method="get">
+					<input type="hidden" name="post_no" value="${postVo.post_no}">
+					<input type="hidden" name="post_board" value="${postVo.post_board}">
+					<button type="submit" class="btn btn-default">삭제</button>
+				</form>
+				</c:if>
+
+				<form  class="form" action="/post/postCommentView" method="get">
+					<input type="hidden" name="post_board" value="${postVo.post_board}">
+					<input type="hidden" name="post_pid" value="${postVo.post_no}">
+					<input type="hidden" name="post_no" value="${postVo.post_no}">
+					<button type="submit" class="btn btn-default">답글</button>
+				</form>
+			</div>
+		</div>
+		<div class="col-sm-10"></div>
 	</div>
 
 </body>

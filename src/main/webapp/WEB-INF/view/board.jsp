@@ -1,12 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-	<%-- header --%>
-	<%@include file="./common/header.jsp"%>
-			<%-- left --%>
-			<%@include file="./common/left.jsp"%>
-
-
+	<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
 $(document).ready(function() {  
 	$(".labelhd").hide();
@@ -33,51 +28,43 @@ $(document).ready(function() {
 		 <input type="hidden" id="board_name" name="board_name"/> 
 		 <input type="hidden" name="board_user" value="${userVo.userId}"/>
 	</form>
-	<div class="container-flui2d">
-		<div class="row">
+			<div class="blog-post">
+				<h2 class="sub-header">게시판 생성 및 수정</h2>
+				<ul>
+					<li class="board">
+					<label>추가</label> 
+					<label class = "labelhd"></label>
+					<input id ="addboardName" type="text" placeholder="ex)입력하세요.." /> 
+						<select class="addPan">
+							<option value="Y">사용</option>
+							<option value="N">미사용</option>
+					</select> 
+					<button type="button" class="boardClick">등록</button>
+					</li>
+				</ul>
+				<hr>
 
-
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div class="blog-post">
-					<h2 class="sub-header">게시판 생성 및 수정</h2>
+				<!--boardList를 사용한 이유는 전체 board정보가 나와야 미사용 사용여부를 선택할 수 있으니깐  -->
+				<c:forEach items="${boardList}" var="board">
 					<ul>
 						<li class="board">
-						<label>추가</label> 
-						<label class = "labelhd"></label>
-						<input id ="addboardName" type="text" placeholder="ex)입력하세요.." /> 
-							<select class="addPan">
-								<option value="Y">사용</option>
-								<option value="N">미사용</option>
-						</select> 
-						<button type="button" class="boardClick">등록</button>
-						</li>
-					</ul>
-					<hr>
+						<label> 수정 </label> 
+						<label class = "labelhd">${board.board_no}</label>
+						<input type="text" value="${board.board_name}"/> 
+							<select>
+								<option value="Y"
+									<c:if test="${board.board_use=='Y'}">selected</c:if>>사용
+								</option>
+								<option value="N"
+									<c:if test="${board.board_use=='N'}">selected</c:if>>미사용
+								</option>
+							</select>
+							<button type="button" class="boardClick">수정</button>
+							</li>
+						</ul>
+				</c:forEach>
 
-					<!--boardList를 사용한 이유는 전체 board정보가 나와야 미사용 사용여부를 선택할 수 있으니깐  -->
-					<c:forEach items="${boardList}" var="board">
-						<ul>
-							<li class="board">
-							<label> 수정 </label> 
-							<label class = "labelhd">${board.board_no}</label>
-							<input type="text" value="${board.board_name}"/> 
-								<select>
-									<option value="Y"
-										<c:if test="${board.board_use=='Y'}">selected</c:if>>사용
-									</option>
-									<option value="N"
-										<c:if test="${board.board_use=='N'}">selected</c:if>>미사용
-									</option>
-								</select>
-								<button type="button" class="boardClick">수정</button>
-								</li>
-							</ul>
-					</c:forEach>
-
-					<hr>
-				</div>
+				<hr>
 			</div>
-		</div>
-	</div>
 </body>
 </html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<!--DOCTYPE : https://tiles.apache.org/framework/tiles-core/dtddoc/index.html 에서 복사/붙혀넣기 -->
+<tiles-definitions>
+	<definition name="basicLayout" template="/WEB-INF/view/common/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/view/common/header.jsp"/>
+		<put-attribute name="left" value="/WEB-INF/view/common/left.jsp"/>
+		<put-attribute name="content" value=""/>
+	</definition>
+	
+	<!-- 오류 났던 이유 : definition name="basicLayout" 이랑 definition name="main" extends="basicLayout" 대소문자를 다르게 함  -->
+	<definition name="main" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/main.jsp"/>
+	</definition>
+	
+	<!-- name은 userController에서 줬던 return 값과동일하게 준다. -->
+	<definition name="board" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/board.jsp"/>
+	</definition>
+	
+	<definition name="postList" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/postList.jsp"/>
+	</definition>
+	
+	<definition name="postNew" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/postNew.jsp"/>
+	</definition>
+	
+	<definition name="postDetail" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/postDetail.jsp"/>
+	</definition>
+	
+	<definition name="postUpdate" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/postUpdate.jsp"/>
+	</definition>
+	
+	<definition name="postCommNew" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/postCommNew.jsp"/>
+	</definition>
+	
+</tiles-definitions>

@@ -101,16 +101,8 @@
 </script>
 
 </head>
-<body>
-	<%-- header --%>
-	<%@include file="./common/header.jsp"%>
-	<div class="container-fluid">
-		<div class="row">
-
-
-			<%-- left --%>
-			<%@include file="./common/left.jsp"%>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<body>	
+			
 			 <div class="freewritenew_wrap">
 				<h2> 수정 </h2>
 				<hr>
@@ -126,9 +118,6 @@
 				<hr>
 				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="수정 저장" />
 				</form>
-				</div>
-			</div>
-		</div>
 	</div>
 </head>
 </body>

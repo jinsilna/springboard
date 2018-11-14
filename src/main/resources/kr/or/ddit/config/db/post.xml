@@ -48,10 +48,10 @@
 	
 	<!-- 게시글 목록 뿌려주기 (페이징처리 + rnum) -->
 	<select id="selectPostBoardList" parameterType="pageVo" resultType="postVo">
-		select * from (
+		select *  from (
 			select rownum rnum , a.*
 			from
-			(SELECT post_no, LPAD('└RE ', 3*(LEVEL-1),'　') || post_title,
+			(SELECT post_no, LPAD('　L', 3*(LEVEL-1),'　') || post_titlel,
 			post_title, post_context, post_rmv, post_date, post_board, post_pid, userid
 			FROM post
 			where post_board = #{board_no}

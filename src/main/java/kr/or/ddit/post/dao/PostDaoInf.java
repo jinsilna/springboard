@@ -45,7 +45,7 @@ public interface PostDaoInf {
 	 * @return
 	 * Method 설명 : 게시글 삭제
 	 */
-	public int deletePost(int postNo);
+	public int deletePost(int post_no);
 	
 	/**
 	 * Method : selectOnePost
@@ -53,7 +53,7 @@ public interface PostDaoInf {
 	 * 변경이력 :
 	 * @param post_no
 	 * @return
-	 * Method 설명 : 
+	 * Method 설명 : 게시글 번호로 하나의 게시글 가져오기 
 	 */
 	public PostVo selectOnePost(int post_no);
 	

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Insert;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,6 +100,27 @@ public class PostController {
 		model.addAttribute("board_name",board_name);
 		model.addAttribute("board_no", board_no);
 		return "postList";
+	}
+	
+	
+	
+	/**
+	 * Method : postPageListAjax
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param model
+	 * @param pageVo
+	 * @return
+	 * Method 설명 : ajax
+	 */
+	@RequestMapping("/postPageListAjax")
+	public String postPageListAjax(Model model, PageVo pageVo, @RequestParam(value="board_no")int board_no) {
+		
+		Map<String, Object> resultMap = postService.postBoardList(pageVo);
+		
+		model.addAllAttributes(resultMap);
+		return "jsonView";
+		
 	}
 	
 	/**
@@ -224,12 +246,12 @@ public class PostController {
 	 * 				 '삭제되었습니다.' 글이 나오게 
 	 */
 	@RequestMapping("/postDelete")
-	public String postDelete(Model model ,@RequestParam(value="post_no")int post_no
-									,@RequestParam(value="post_pid")int post_pid) {
+	public String postDelete(Model model ,@RequestParam(value="post_no")int post_no) {
 		
 		int postDelete = postService.deletePost(post_no);		
 		// 새로고침 효과
 		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("post_no" ,post_no);
 		model.addAttribute("boardUserList", boardUserList);
 		
 		return "postDetail";
@@ -258,17 +280,19 @@ public class PostController {
 	 * @return
 	 * Method 설명 : 게시글 답글 jsp 로 넘겨주는곳.
 	 */
-	@RequestMapping("/postCommentView")
-	public String postCommentView(Model model ,PostVo postVo ,HttpServletRequest request) {
+	@RequestMapping(value="/postCommentView",method=RequestMethod.GET)
+	public String postCommentView(Model model ,PostVo postVo 
+										,@RequestParam(value="post_pid")int post_pid
+										,@RequestParam(value="post_no")int post_no) {
 		
-		int post_no = Integer.parseInt(request.getParameter("post_no"));
-		int post_board = Integer.parseInt(request.getParameter("post_board"));
-		int post_pid = Integer.parseInt(request.getParameter("post_pid"));
+		System.out.println("01 " + postVo.getPost_no());
+		System.out.println("02 " + postVo.getPost_board());
+		System.out.println("03 " + postVo.getPost_context());
+		System.out.println("04" + postVo.getPost_pid());
+		System.out.println("05 " + postVo.getPost_rmv());
+		System.out.println("06 " + postVo.getPost_title());
 		
-		model.addAttribute("post_no", post_no);
-		model.addAttribute("post_board", post_board);
-		model.addAttribute("post_pid", post_pid);
-		
+		model.addAttribute("post_pid",post_pid);
 		return "postCommNew";
 	}
 	
@@ -281,11 +305,18 @@ public class PostController {
 	 * Method 설명 : 게시글 답글 생성부분 detail화면으로 간다.
 	 */  
 	@RequestMapping(value="/postComment",method=RequestMethod.POST)
-	public String postComment(Model model ,@RequestParam(value="post_no")int post_no
-										,@RequestParam(value="post_pid")int post_pid
-									,PostVo postVo,CommentaryVo commentaryVo ) {
+	public String postComment(PostVo postVo, Model model,
+								@RequestParam(value="post_no")int post_no,
+							    @RequestParam(value="post_pid")int post_pid) {
+		System.out.println("1 " + postVo.getPost_no());
+		System.out.println("2 " + postVo.getPost_board());
+		System.out.println("3 " + postVo.getPost_context());
+		System.out.println("4" + postVo.getPost_pid());
+		System.out.println("5 " + postVo.getPost_rmv());
+		System.out.println("6" + postVo.getPost_title());
 		
-		int insertpost = postService.insertPostNo(postVo);
+		int insertcomment = postService.insertPost(postVo);
+		System.out.println("insertcomm");
 		
 		// 새로고침 효과 
 		List<BoardVo> boardUserList = boardService.boardUserList();
@@ -296,17 +327,6 @@ public class PostController {
 	
 	
 }	
-
-
-
-
-
-
-
-
-
-
-
 
 
 

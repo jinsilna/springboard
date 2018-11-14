@@ -1,6 +1,5 @@
 package kr.or.ddit.post.service;
 
-import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.post.model.PostVo;
@@ -13,7 +12,7 @@ public interface PostServiceInf {
 	 * 변경이력 :
 	 * @param postVo
 	 * @return
-	 * Method 설명 : 
+	 * Method 설명 : 게시글 추가 
 	 */
 	public int insertPostNo(PostVo postVo);
 	
@@ -23,7 +22,7 @@ public interface PostServiceInf {
 	 * 변경이력 :
 	 * @param postVo
 	 * @return
-	 * Method 설명 : 게시글 추가 
+	 * Method 설명 : 게시글 추가 (post_pid)
 	 */
 	public int insertPost(PostVo postVo);
 	

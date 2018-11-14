@@ -15,8 +15,6 @@ public class PostVo {
 	private String userId;
 	private String post_user;
 	
-	
-	
 	public String getPost_user() {
 		return post_user;
 	}

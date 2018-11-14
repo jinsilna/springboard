@@ -25,9 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 // controller의 경우 service 스프링 빈을 주입받기때문에
 // service, dao에 대한 설정파일도 필요하다.
 @ContextConfiguration(locations= {"classpath:kr/or/ddit/config/spring/servlet-context.xml",
-									"classpath:kr/or/ddit/config/spring/transaction-context.xml",
 									"classpath:kr/or/ddit/config/spring/root-context.xml",
-									"classpath:kr/or/ddit/config/spring/datasource-test-context.xml"})
+									"classpath:kr/or/ddit/config/spring/datasource-context.xml"})
 
 // 스프링 컨테이너를 웹 기반에서 활용가능한 WebApplicationContext로 생성
 @WebAppConfiguration
@@ -45,10 +44,10 @@ public class ControllerTestConfig {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+		/*ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		populator.addScript(new ClassPathResource("kr/or/ddit/config/db/dbInit.sql"));
 		populator.setContinueOnError(false);
-		DatabasePopulatorUtils.execute(populator,datasource);
+		DatabasePopulatorUtils.execute(populator,datasource);*/
 	}
 	
 	@Ignore   // 불필요한 파일을 skip

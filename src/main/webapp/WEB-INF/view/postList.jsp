@@ -4,7 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +16,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
-<title>boardPagingList.jsp</title>
+<title>postList.jsp</title>
 <%-- basiclb --%>
 <%@include file="./common/basiclb.jsp"%>
 <!-- cursor pointer : 손가락 모양으로바뀜 -->
@@ -35,55 +35,90 @@
 		console.log("document.ready");
 		
 		// tr에 대해 select (class="userClick")
-		$(".userClick").on("click",function(){
+		$("#postList").on("click",".userClick",function(){
 			console.log("userClick");
 			var post_no =$(this).children()[1].innerHTML;
+			
 			$("#post_no").val(post_no);
 			  $("#frm").submit();
 		});
+		getPostList(1,${board_no});
 	});
+	
+	// ***************** Ajax ******************************
+	// List
+	function getPostList(page, board_no) {
+		var pageSize = 10;
+		console.log("page" + page);
+		
+		$.ajax({
+			type : "GET",
+			url : "/post/postPageListAjax",
+			data : "page="+page+"&pageSize="+pageSize+"&board_no="+board_no,
+			
+			success : function (data) {
+				console.log(data);
+				
+				var html = "";
+				$.each(data.postList, function (idx,post) {
+					console.log(post);
+					html += "<tr class='userClick'>";
+					html += "<td>"+post.rnum+"</td>";
+					html += "<td>"+post.post_no+"</td>";
+					html += "<td>"+post.post_title+"</td>";
+					html += "<td>"+post.userId+"</td>";
+					html += "<td>"+post.post_date+"</td>";
+					html += "</tr>";
+				});
+				
+			$("#postList").html("");
+			$("#postList").html(html);
+			
+			// page //
+			var paging ="";
+			paging +="<li><a href='javascript:getPostList("+ i +","+${board_no}+");'aria-label='Previous'><span aria-hidden='true'>&laquo;</span>";
+		    for(var i= 1; i<=data.pageCnt; i++) {
+			paging += "<li><a href='javascript:getPostList("+ i +","+${board_no}+");'>"+ i+ "</a></li>";
+			}
+			paging +="<li><a href='javascript:getPostList("+ data.pageCnt +" ,"+${board_no}+");'aria-label='Next'><span aria-hidden='true'>&raquo;</span>";
+			$(".pagination").html(paging);
+ 			
+			}
+		});
+	} 
+	
 </script>
 </head>
-
 
 <form  id = "frm" action="/post/postDetail" method="get">
 	<input type = "hidden" id = "post_no" name = "post_no" value="${post_no}"/>
 </form>
 
-
 <body>
-	<%-- header --%>
-	<%@include file="./common/header.jsp"%>
-	 
-	
-	<div class="container-fluid">
-		<div class="row">
-			<%-- left --%>
-			<%@include file="./common/left.jsp"%>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<div class="row">
 	<div class="col-sm-8 blog-main">
 		<h2 class="sub-header">${board_name}</h2>
 		<div class="table-responsive">
 			<table class="table table-striped table-hover" >
-				<tr>
-					<th>No</th>
-					<th>게시글 번호</th>
-					<th>제목</th>
-					<th>작성자 Id</th>	
-					<th>작성일시</th>
-				</tr>
-			
-			 	<c:forEach items="${postList}" var = "vo" >
-			 		 
-				<tr class= "userClick">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>게시글 번호</th>
+						<th>제목</th>
+						<th>작성자 Id</th>	
+						<th>작성일시</th>
+					</tr>
+				</thead>
+				<tbody id="postList">
+			 	<%--<c:forEach items="${postList}" var = "vo" > 
+				 <tr class ="userClick">
 					<td>${vo.rnum}</td>
 					<td>${vo.post_no}</td>
 					<td>${vo.post_title}</td>
 					<td>${vo.userId}</td>
-					<td>${vo.post_date}</td>
+					<td>${vo.post_date}</td>  
 				</tr>
-				</c:forEach> 
+				 </c:forEach>  --%>
+				</tbody>
 			</table>
 		</div>
 
@@ -94,31 +129,25 @@
 
 		<div class="text-center">
 			<ul class="pagination">
-				 	<li>
-				     	 <a href="/boardPaging?page=1&pageSize=10" aria-label="Previous">
+				<%-- <li>
+				     	 <a href="/post/postBoardList?page=1&pageSize=10" aria-label="Previous">
 				        <span aria-hidden="true">&laquo;</span>
 				      	</a>
 		    		</li>
-						<%-- <% int pageCnt = (Integer)request.getAttribute("pageCnt"); 
-							for(int p = 1; p <= pageCnt; p++){
-						%>
-						<li><a href="/userPagingList?page=<%=p%>&pageSize=10"><%=p%></a></li>
-						<%} %>
-						<li>
-						      <a href="/userPagingList?page=<%=pageCnt%>&pageSize=10" aria-label="Next"> --%>
-				      
 				      <c:forEach begin="1" end="${pageCnt}" var="p">
 					      <li>
-					      	<a href="/boardPaging?page=${p}&pageSize=10">${p}</a>
+					      	<a href="/post/postBoardList?page=${p}&pageSize=10">${p}</a>
 					      </li>
 				      </c:forEach>
 				     	  <li>
-				     		 <a href="/boardPaging?page=${pageCnt}>&pageSize=10" aria-label="Next"> 
+				     		 <a href="/post/postBoardList?page=${pageCnt}&pageSize=10" aria-label="Next"> 
 				      			<span aria-hidden="true">&raquo;</span>
 				      		</a>
-  				 		 </li>
-						</ul>
-					</div>
+  				 	</li> --%>
+			 </ul>
+	    </div>
+				
+					<!--  검색 기능  -->
 					 <form class = "search" action="/post/postSearch" method="get">
 						<div>
 							<label> 제목 </label>　　
@@ -127,10 +156,5 @@
 						</div>
 					 </form> 
 				</div>
-			</div>
-			</div>
-		</div>
-	</div>
-
 </body>
 </html>
