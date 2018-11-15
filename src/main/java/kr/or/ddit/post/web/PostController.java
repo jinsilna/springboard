@@ -81,9 +81,13 @@ public class PostController {
 	 */
 	
 	@RequestMapping("/postBoardList")
-	public String postBoardList(Model model, PageVo pageVo, BoardVo boardVo, @RequestParam(value="searchText") String searchText,
+	public String postBoardList(Model model, PageVo pageVo, BoardVo boardVo, 
 						PostVo postVo, HttpServletRequest request) throws UnsupportedEncodingException {
 		request.setCharacterEncoding("utf-8");
+		String searchText ="";
+		if(request.getParameter("searchText")!=null) {
+			searchText = request.getParameter("searchText");
+		}
 		System.out.println("pageVo search" + pageVo.getSearchText());
 		System.out.println("zzzz" + searchText);
 		// left.jsp 에서 게시판이름을 클릭했을때 전의 상태로 돌아가서 
@@ -100,9 +104,9 @@ public class PostController {
 		List<PostVo> postList = (List<PostVo>) resultMap.get("postList");
 		int pageCnt = (int) resultMap.get("pageCnt");
 		
-		pageVo.setSearchText(searchText);
+		//pageVo.setSearchText(searchText);
 		System.out.println();
-		model.addAttribute("searchTest",searchText);
+		//model.addAttribute("searchTest",searchText);
 		model.addAllAttributes(resultMap);
 		model.addAttribute("userId",userId);
 		model.addAttribute("board_name",board_name);
@@ -124,9 +128,14 @@ public class PostController {
 	 */
 	@RequestMapping("/postPageListAjax")
 	public String postPageListAjax(Model model, PageVo pageVo, @RequestParam(value="board_no")int board_no) {
-		
+
 		Map<String, Object> resultMap = postService.postBoardList(pageVo);
 		
+		if(pageVo.getSearchText()==null) {
+			pageVo.setSearchText("");
+		}
+		
+		resultMap.put("pageVo",pageVo);
 		model.addAllAttributes(resultMap);
 		return "jsonView";
 		
@@ -299,22 +308,51 @@ public class PostController {
 	 * 변경이력 :
 	 * @return
 	 * Method 설명 : 검색 기능 
-	 * ********************* 아직 구현하지 못했음.********************************
+	 * Model model, PostVo postVo , PageVo pageVo ,@RequestParam(value="post_board") int post_board,
+		BoardVo boardVo	, @RequestParam(value="post_no") int post_no
+			, HttpServletRequest request
+	 * ********************* 아직 구현하지 못했음.
+	 * @throws UnsupportedEncodingException ********************************
 	 */
-	@RequestMapping(value="/postSearch",method=RequestMethod.GET)
-	public String postSearch(Model model, PostVo postVo , PageVo pageVo ,@RequestParam(value="post_board") int post_board
-			,@RequestParam(value="board_name") String board_name, @RequestParam(value="post_no") int post_no
-			, @RequestParam(value="searchText") String searchText) {
+	@RequestMapping(value="/postSearch",method=RequestMethod.POST)
+	public String postSearch(Model model, PageVo pageVo, BoardVo boardVo, 
+			PostVo postVo, HttpServletRequest request,
+			@RequestParam(value="searchText") String searchText) throws UnsupportedEncodingException {
+		
+		request.setCharacterEncoding("utf-8");
 		
 		pageVo.setSearchText(searchText);
-		Map<String, Object> resultMap = postService.postBoardList(pageVo);
+		System.out.println("pageVo search 나와라!" + postVo.getSearchText());
+		System.out.println("zzzz 나와라 ::" + searchText);
 		
-		return "redirect:/post/postBoardList?page=1&pageSize=10&board_no="+post_board+"&searchText="+searchText;
+		// left.jsp 에서 게시판이름을 클릭했을때 전의 상태로 돌아가서 
+		// 새로고침 효과를 주는 것.
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
+
+		Map<String, Object> resultMap = postService.postBoardList(pageVo);
+	
+		String userId = postVo.getUserId();
+		String board_name = boardVo.getBoard_name();
+		String board_no = boardVo.getBoard_no();
+		
+		System.out.println("pageVo"+ pageVo.getSearchText());
+		List<PostVo> postList = (List<PostVo>) resultMap.get("postList");
+		int pageCnt = (int) resultMap.get("pageCnt");
+		
+		model.addAttribute("postList1",postList);
+		model.addAttribute("searchText",searchText);
+		model.addAllAttributes(resultMap);
+		model.addAttribute("userId",userId);
+		model.addAttribute("board_name",board_name);
+		model.addAttribute("board_no", board_no);
+	
+		return "redirect:/post/postBoardList?";
 	}
 	/******************************************************************************/
 	
 	/**
-	 * Method : postCommentW
+	 * Method : postComment
 	 * 작성자 : pc07
 	 * 변경이력 :
 	 * @return

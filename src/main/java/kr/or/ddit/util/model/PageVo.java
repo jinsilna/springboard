@@ -5,7 +5,6 @@ public class PageVo {
 	private int pageSize;
 	private int board_no;
 	private String post_title;
-	
 	private String searchText;
 	
 	public String getSearchText() {
@@ -15,6 +14,7 @@ public class PageVo {
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
+
 	
 	public String getPost_title() {
 		return post_title;

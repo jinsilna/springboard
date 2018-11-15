@@ -27,4 +27,15 @@ public interface CommentaryServiceInf {
 	 * Method 설명 :  각 게시글에 대한 댓글 조회
 	 */
 	public List<CommentaryVo> selectPostComment(int post_no);
+	
+	
+	/**
+	 * Method : deleteComment
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param commentaryVo
+	 * @return
+	 * Method 설명 : 댓글 삭제 
+	 */
+	public int deleteComment(int comm_post);
 }

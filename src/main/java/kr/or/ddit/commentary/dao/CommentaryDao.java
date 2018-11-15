@@ -28,6 +28,19 @@ public class CommentaryDao implements CommentaryDaoInf{
 		return sqlSessionTemplate.insert("commentary.insertComment",commentaryVo);
 	}
 	
+
+	/**
+	 * Method : deleteComment
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param comm_post
+	 * @return
+	 * Method 설명 : 댓글 삭제
+	 */
+	@Override
+	public int deleteComment(int comm_post) {
+		return sqlSessionTemplate.update("commentary.deleteComment",comm_post);
+	}
 	/**
 	 * Method : selectPostComment
 	 * 작성자 : pc07
@@ -40,5 +53,6 @@ public class CommentaryDao implements CommentaryDaoInf{
 	public List<CommentaryVo> selectPostComment(int post_no) {
 		return sqlSessionTemplate.selectList("commentary.selectPostComment",post_no);
 	}
+
 
 }

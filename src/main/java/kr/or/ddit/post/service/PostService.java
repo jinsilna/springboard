@@ -47,10 +47,12 @@ public class PostService implements PostServiceInf{
 	public Map<String, Object> postBoardList(PageVo pageVo) {
 		List<PostVo> postList = postDao.postBoardList(pageVo);
 		int totalBoardCnt = postDao.postBoardCnt(pageVo.getBoard_no());
+		String searchText = pageVo.getSearchText();
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("postList", postList);
 		resultMap.put("pageCnt", (int)Math.ceil((double)totalBoardCnt/pageVo.getPageSize()));
+		resultMap.put("searchText", searchText);
 		
 		return resultMap;
 	}

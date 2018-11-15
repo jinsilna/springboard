@@ -5,7 +5,9 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class PostVo {
+import kr.or.ddit.util.model.PageVo;
+
+public class PostVo extends PageVo{
 	
 	private int rnum;
 	private int post_no;
@@ -20,6 +22,7 @@ public class PostVo {
 	private String post;
 	
 	private Date formattedDate;
+	
 
 	public String getFormattedDate() {
 		if(post_date != null) {

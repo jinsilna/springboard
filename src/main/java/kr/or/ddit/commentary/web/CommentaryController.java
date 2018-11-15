@@ -1,3 +1,6 @@
+
+
+
 package kr.or.ddit.commentary.web;
 
 import java.util.List;
@@ -15,6 +18,7 @@ import kr.or.ddit.board.model.BoardVo;
 import kr.or.ddit.board.service.BoardServiceInf;
 import kr.or.ddit.commentary.model.CommentaryVo;
 import kr.or.ddit.commentary.service.CommentaryServiceInf;
+import kr.or.ddit.post.model.PostVo;
 import kr.or.ddit.post.service.PostServiceInf;
 
 @Controller
@@ -31,24 +35,57 @@ public class CommentaryController {
 	private CommentaryServiceInf commentaryService;
 	
 	
+	/**
+	 * Method : commentaryInsert
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param request
+	 * @param model
+	 * @param comment
+	 * @param postVo
+	 * @return
+	 * Method 설명 : 댓글 생성
+	 */
 	@RequestMapping(value="/commentaryInsert",method=RequestMethod.POST)
-	public String commentaryList(HttpServletRequest request, Model model,CommentaryVo comment, 
-								@RequestParam(value="post_no")int post_no) {
-		
+	public String commentaryInsert(HttpServletRequest request, Model model,CommentaryVo comment, 
+								@RequestParam(value="post_no")int post_no, PostVo postVo) {
+	
 		String comm_context = request.getParameter("comment");
 		String comm_user = request.getParameter("comm_user");
 		
 		comment.setComm_context(comm_context);
 		comment.setComm_user(comm_user);
 		comment.setComm_post(post_no);
-		
 		int comm = commentaryService.insertComment(comment);
 		
 		// 새로고침 효과
 		List<BoardVo> boardUserList = boardService.boardUserList();
 		model.addAttribute("boardUserList", boardUserList);
+		
+		model.addAttribute("post_no",post_no);
+		model.addAttribute("comm_user",comm_user);
+		
 				
 		// redirect ==> 그화면으로 바로 보내준다.
 		return "redirect:/post/postDetail?post_no="+post_no;
+	}
+	
+	
+	/**
+	 * Method : commentaryDelete
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @return
+	 * Method 설명 : 댓글 삭제 
+	 */
+	@RequestMapping(value="/commentaryDelete", method=RequestMethod.POST)
+	public String commentaryDelete(HttpServletRequest request, Model model, CommentaryVo comment,
+										@RequestParam(value="comm_post")int comm_post
+										,@RequestParam(value="comm_user")int comm_user) {
+	
+		
+		int comm = commentaryService.deleteComment(comm_post);
+		
+		return "redirect:/post/postDetail?comm_post="+comm_post;
 	}
 }

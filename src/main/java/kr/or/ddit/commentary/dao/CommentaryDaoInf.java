@@ -18,6 +18,15 @@ public interface CommentaryDaoInf {
 	public int insertComment(CommentaryVo commentaryVo);
 	
 	
+	/**
+	 * Method : deleteComment
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param commentaryVo
+	 * @return
+	 * Method 설명 : 댓글 삭제 
+	 */
+	public int deleteComment(int comm_post);
 	
 	/**
 	 * Method : selectPostComment

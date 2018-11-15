@@ -16,4 +16,11 @@
 		from commentary
 		where comm_post= #{comm_post}
 	</select>
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteComment" parameterType="int">
+		update commentary
+		set comm_rmv ='Y'
+		where comm_post = #{comm_post}
+	</update>
 </mapper>

@@ -28,6 +28,9 @@
 		text-align: center;
 		
 	}
+	.delete{
+		pointer-events: none;
+	}
 </style>
  <script type="text/javascript">
 	$(document).ready(function(){
@@ -49,13 +52,16 @@
 	// List
 	function getPostList(page, board_no) {
 		var pageSize = 10;
+		var searchText = $("#searchText").val();
 		console.log("page" + page);
 		
 		$.ajax({
 			type : "GET",
 			url : "/post/postPageListAjax",
-			data : "page="+page+"&pageSize="+pageSize+"&board_no="+board_no,
-			
+			data : "page="+page+"&pageSize="+pageSize+"&board_no="+board_no+"&searchText="+searchText,
+			error : function (xhr){
+				console.log(xhr);
+			},
 			success : function (data) {
 				console.log(data);
 				
@@ -65,7 +71,11 @@
 					html += "<tr class='userClick'>";
 					html += "<td>"+post.rnum+"</td>";
 					html += "<td>"+post.post_no+"</td>";
-					html += "<td>"+post.post+"</td>";					
+					if(post.post_rmv=='Y'){
+					html += "<td class ='delete'>"+"삭제된 글입니다."+"</td>"; 
+ 					}else{						 
+					html += "<td>"+post.post+"</td>";						
+					 }
 					html += "<td>"+post.userId+"</td>";
 					html += "<td>"+post.formattedDate+"</td>";
 					html += "</tr>";
@@ -124,6 +134,9 @@
 			</table>
 		</div>
 
+	<%-- 테스트 해보는거  	
+	<c:forEach items="postList1" var="p">
+		</c:forEach> --%>
 		<form  id = "frm" action="/post/postNew" method="get">
 			<input type="hidden"  id="board_no" name="board_no" value="${board_no}">
 			<input type="submit" class="btn btn-default pull-right" value="새글작성">
@@ -150,12 +163,12 @@
 	    </div>
 				
 					<!--  검색 기능  -->
-					 <form class = "search" action="/post/postSearch" method="get">
+					 <form class = "search" action="/post/postSearch" method="POST">
 						<div>
 							<label> 제목 </label>　　
-							<input type="text" name ="searchText" >
+							<input type="text" id="searchText" name ="searchText" value="${searchText}">
 							<input type = "hidden" id = "post_no" name = "post_no" value="${postVo.post_no}"/>
-							<input type = "hidden" id = "post_board" name = "post_board" value="${boardVo.board_no}"/>
+							<input type = "hidden" id = "board_no" name = "board_no" value="${boardVo.board_no}"/>
 							<input type = "hidden" id = "board_name" name = "board_name" value="${board_name}"/>
 							<button type="submit" class="btn btn-default">검색하기</button>  
 						</div>

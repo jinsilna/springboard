@@ -43,4 +43,17 @@ public class CommentaryService implements CommentaryServiceInf{
 		
 	}
 
+	/**
+	 * Method : deleteComment
+	 * 작성자 : pc07
+	 * 변경이력 :
+	 * @param comm_post
+	 * @return
+	 * Method 설명 : 댓글 삭제 
+	 */
+	@Override
+	public int deleteComment(int comm_post) {
+		return commentaryDao.deleteComment(comm_post);
+	}
+
 }
