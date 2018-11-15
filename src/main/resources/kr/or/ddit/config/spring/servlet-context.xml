@@ -49,6 +49,17 @@
 			<!-- json 처리용 view -->
 		<bean id ="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"></bean>
 		
+		
+		<!-- =============================================================================================== -->
+		<!-- hello : /WEB-INF/view/hello.jsp -->
+		<!--  multipartResolver 설정 :  해당 설정이 없으면 fileupload가 불가능하다!! 
+			bean id 는 "multipartResolver 로 정해져있으니 틀리면안된다. -->
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<property name="maxUploadSize" value="25000000"/>
+		</bean>
+	<!-- 	<bean id="uploadPath" class="java.lang.String">
+			<constructor-arg value="D:\upload"></constructor-arg>
+		</bean> -->
 </beans>
 
 

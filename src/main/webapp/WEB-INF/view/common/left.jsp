@@ -8,7 +8,7 @@
 		<c:forEach items="${boardUserList}" var="board">
 		 <li>	
 			<li class="active" >
-				<a href="/post/postBoardList?page=1&pageSize=10&board_name=${board.board_name}&board_no=${board.board_no}">${board.board_name}</a>
+				<a href="/post/postBoardList?page=1&pageSize=10&board_name=${board.board_name}&board_no=${board.board_no}&searchText=">${board.board_name}</a>
 			</li>	
 		</c:forEach>
 	</ul>

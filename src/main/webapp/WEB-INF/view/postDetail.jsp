@@ -120,6 +120,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				 <hr>
+				 
 				<c:if test="${userVo.userId==postVo.userId}">
 				<form class="form" action="/post/postUpdateView" method="get">
 					<input type="hidden" name="post_no" value="${postVo.post_no}">

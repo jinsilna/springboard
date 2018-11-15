@@ -1,6 +1,9 @@
 package kr.or.ddit.post.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class PostVo {
 	
@@ -9,12 +12,38 @@ public class PostVo {
 	private String post_title;
 	private String post_context;
 	private String post_rmv;
-	private Date post_date;
+	
 	private int post_board;
 	private int post_pid;
 	private String userId;
 	private String post_user;
+	private String post;
 	
+	private Date formattedDate;
+
+	public String getFormattedDate() {
+		if(post_date != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			return sdf.format(post_date);			
+		}else {
+			return "";
+		}
+	}
+
+	public void setFormattedDate(Date formattedDate) {
+		this.formattedDate = formattedDate;
+	}
+	//----------------------------------------
+	//생일 :  년 월 일 
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date post_date;
+	
+	public String getPost() {
+		return post;
+	}
+	public void setPost(String post) {
+		this.post = post;
+	}
 	public String getPost_user() {
 		return post_user;
 	}
@@ -76,11 +105,13 @@ public class PostVo {
 	public void setRnum(int rnum) {
 		this.rnum = rnum;
 	}
+
 	@Override
 	public String toString() {
 		return "PostVo [rnum=" + rnum + ", post_no=" + post_no + ", post_title=" + post_title + ", post_context="
-				+ post_context + ", post_rmv=" + post_rmv + ", post_date=" + post_date + ", post_board=" + post_board
-				+ ", post_pid=" + post_pid + ", userId=" + userId + ", post_user=" + post_user + "]";
+				+ post_context + ", post_rmv=" + post_rmv + ", post_board=" + post_board + ", post_pid=" + post_pid
+				+ ", userId=" + userId + ", post_user=" + post_user + ", post=" + post + ", formattedDate="
+				+ formattedDate + ", post_date=" + post_date + "]";
 	}
 	
 	

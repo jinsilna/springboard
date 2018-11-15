@@ -102,7 +102,7 @@
 			 <div class="freewritenew_wrap">
 				<h2>새글작성 </h2>
 				<hr>
-			<form action="/post/postNewSave" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
+			<form action="/post/postNewSave" method="post" id="frm" enctype="multipart/form-data">  
 				<span>제목 : 　</span> 
 					<input type="text" id="post_title" name="post_title" />
 					<input type="hidden" name="post_no" value="${post_no}"/>
@@ -110,7 +110,7 @@
 					<input type="hidden" name="post_board" value="${post_board}"/>
 				<hr>
 				<div id="fileDiv">
-					<input type="file" class="fileInput" id="inputId" name="postFile" />
+					<input type="file" class="fileInput" id="inputId" name="profilePic" />
 				</div><br> 	
 				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
 				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />
@@ -118,5 +118,4 @@
 				</div>
 </head>
 </body>
-
 </html>

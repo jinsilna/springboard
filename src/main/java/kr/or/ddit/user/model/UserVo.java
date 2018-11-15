@@ -26,7 +26,11 @@ public class UserVo implements HttpSessionBindingListener{
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date birth;
 	//----------------------------------------
-	
+	public String getBirthRomat(Date birth){
+		SimpleDateFormat fomat = new SimpleDateFormat("yyyy-MM-dd");
+		String toDate = fomat.format(birth);
+		return toDate;
+	}
 
 	public int getRnum() {
 		return rnum;
@@ -121,11 +125,7 @@ public class UserVo implements HttpSessionBindingListener{
 		this.birth = birth;
 	}
 
-	public String getBirthRomat(Date birth){
-		SimpleDateFormat fomat = new SimpleDateFormat("yyyy-MM-dd");
-		String toDate = fomat.format(birth);
-		return toDate;
-	}
+	
 
 	@Override
 	public String toString() {

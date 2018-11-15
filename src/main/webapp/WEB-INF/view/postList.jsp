@@ -29,7 +29,7 @@
 		
 	}
 </style>
-<script type="text/javascript">
+ <script type="text/javascript">
 	$(document).ready(function(){
 
 		console.log("document.ready");
@@ -65,9 +65,9 @@
 					html += "<tr class='userClick'>";
 					html += "<td>"+post.rnum+"</td>";
 					html += "<td>"+post.post_no+"</td>";
-					html += "<td>"+post.post_title+"</td>";
+					html += "<td>"+post.post+"</td>";					
 					html += "<td>"+post.userId+"</td>";
-					html += "<td>"+post.post_date+"</td>";
+					html += "<td>"+post.formattedDate+"</td>";
 					html += "</tr>";
 				});
 				
@@ -87,11 +87,12 @@
 		});
 	} 
 	
-</script>
+</script> 
 </head>
 
 <form  id = "frm" action="/post/postDetail" method="get">
 	<input type = "hidden" id = "post_no" name = "post_no" value="${post_no}"/>
+	<input type = "hidden" id = "board_name" name = "board_name" value="${board_name}"/>
 </form>
 
 <body>
@@ -109,7 +110,8 @@
 					</tr>
 				</thead>
 				<tbody id="postList">
-			 	<%--<c:forEach items="${postList}" var = "vo" > 
+			 <%-- 	<c:forEach items="${postList}" var = "vo" > 
+			 	
 				 <tr class ="userClick">
 					<td>${vo.rnum}</td>
 					<td>${vo.post_no}</td>
@@ -129,7 +131,7 @@
 
 		<div class="text-center">
 			<ul class="pagination">
-				<%-- <li>
+			<%--  <li>
 				     	 <a href="/post/postBoardList?page=1&pageSize=10" aria-label="Previous">
 				        <span aria-hidden="true">&laquo;</span>
 				      	</a>
@@ -143,7 +145,7 @@
 				     		 <a href="/post/postBoardList?page=${pageCnt}&pageSize=10" aria-label="Next"> 
 				      			<span aria-hidden="true">&raquo;</span>
 				      		</a>
-  				 	</li> --%>
+  				 	</li>  --%>
 			 </ul>
 	    </div>
 				
@@ -151,7 +153,10 @@
 					 <form class = "search" action="/post/postSearch" method="get">
 						<div>
 							<label> 제목 </label>　　
-							<input type="text" >
+							<input type="text" name ="searchText" >
+							<input type = "hidden" id = "post_no" name = "post_no" value="${postVo.post_no}"/>
+							<input type = "hidden" id = "post_board" name = "post_board" value="${boardVo.board_no}"/>
+							<input type = "hidden" id = "board_name" name = "board_name" value="${board_name}"/>
 							<button type="submit" class="btn btn-default">검색하기</button>  
 						</div>
 					 </form> 

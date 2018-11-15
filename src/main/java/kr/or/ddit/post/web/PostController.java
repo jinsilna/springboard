@@ -1,20 +1,21 @@
 package kr.or.ddit.post.web;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.annotations.Insert;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.or.ddit.attach.service.AttachServiceInf;
 import kr.or.ddit.board.model.BoardVo;
 import kr.or.ddit.board.service.BoardServiceInf;
 import kr.or.ddit.commentary.model.CommentaryVo;
@@ -67,6 +68,9 @@ public class PostController {
 	
 	@Resource(name="commentaryService")
 	private CommentaryServiceInf commentaryService;
+	
+	@Resource(name="attachService")
+	private AttachServiceInf attachService;
 
 	/**
 	 * Method : postBoardList
@@ -77,10 +81,11 @@ public class PostController {
 	 */
 	
 	@RequestMapping("/postBoardList")
-	public String postBoardList(Model model, PageVo pageVo, BoardVo boardVo,
+	public String postBoardList(Model model, PageVo pageVo, BoardVo boardVo, @RequestParam(value="searchText") String searchText,
 						PostVo postVo, HttpServletRequest request) throws UnsupportedEncodingException {
 		request.setCharacterEncoding("utf-8");
-		
+		System.out.println("pageVo search" + pageVo.getSearchText());
+		System.out.println("zzzz" + searchText);
 		// left.jsp 에서 게시판이름을 클릭했을때 전의 상태로 돌아가서 
 		// 새로고침 효과를 주는 것.
 		List<BoardVo> boardUserList = boardService.boardUserList();
@@ -95,10 +100,14 @@ public class PostController {
 		List<PostVo> postList = (List<PostVo>) resultMap.get("postList");
 		int pageCnt = (int) resultMap.get("pageCnt");
 		
+		pageVo.setSearchText(searchText);
+		System.out.println();
+		model.addAttribute("searchTest",searchText);
 		model.addAllAttributes(resultMap);
 		model.addAttribute("userId",userId);
 		model.addAttribute("board_name",board_name);
 		model.addAttribute("board_no", board_no);
+		
 		return "postList";
 	}
 	
@@ -129,20 +138,22 @@ public class PostController {
 	 * 변경이력 :
 	 * @return
 	 * Method 설명 : 게시글 목록(리스트) 새글작성 버튼 클릭시 jsp 화면 보이기 
+	 * @throws ServletException 
+	 * @throws IOException 
 	 */
 	@RequestMapping("/postNew")
-	public String postNew(Model model , PostVo postVo, @RequestParam(value="board_no")int board_no) {
+	public String postNew(Model model , PostVo postVo,@RequestParam(value="board_no")int board_no) throws IOException, ServletException {
 		// post_no 값 넣어주기
 		int post_no = postVo.getPost_no();
+		
 		// 넘기려고 담아주기 
 		model.addAttribute("post_no",post_no);
 		model.addAttribute("post_board",board_no);
-		
 		// left.jsp 에서 게시판이름을 클릭했을때 전의 상태로 돌아가서 
-				// 새로고침 효과를 주는 것.
+		// 새로고침 효과를 주는 것.
 		List<BoardVo> boardUserList = boardService.boardUserList();
 		model.addAttribute("boardUserList", boardUserList);
-				
+		
 		return "postNew";
 	}
 	
@@ -153,11 +164,38 @@ public class PostController {
 	 * @return
 	 * Method 설명 : post로 보낸값을 저장하고 저장후엔 list화면을 보여준다.
 	 * @throws UnsupportedEncodingException 
+	 * 
 	 */
 	@RequestMapping(value="/postNewSave",method=RequestMethod.POST)
-	public String postNewSave(PostVo postVo ,Model model) throws UnsupportedEncodingException {
+	public String postNewSave(PostVo postVo , Model model,/* @RequestPart("profilePic") MultipartFile part
+			, AttachVo attachVo,*/HttpServletRequest request) throws UnsupportedEncodingException {
 		
 		int insertpost = postService.insertPostNo(postVo);
+		
+		/*// 파일 업로드 부분 
+			try {
+				if(part.getSize()>0) {
+					String path = request.getServletContext().getRealPath("/profile");
+					
+					String attach_name = part.getOriginalFilename();
+					
+					part.transferTo(new File(path + File.separator + attach_name));
+								
+					// profile
+					attachVo.setAttach_name("/profile/" + attach_name);
+				}else {
+					attachVo.setAttach_name("");
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/
+			
+			
+			
+		//int insertfile = attachService.insertFile(attachVo);
+
 		
 		// 새로고침 효과 
 		List<BoardVo> boardUserList = boardService.boardUserList();
@@ -240,22 +278,19 @@ public class PostController {
 	 * 변경이력 :
 	 * @return
 	 * GET 방식으로 온다.
-	 * Method 설명 : 게시글 삭제 --
-	 * 				 로그인 한 아이디와 post입력한 아이디가 동일하면 
-	 * 				 삭제버튼을 누를수 있고, 동일한 사람이 눌렀을경우 실제로 삭제가 되는게 아니고 
-	 * 				 '삭제되었습니다.' 글이 나오게 
+	 * Method 설명 : 게시글 삭제 
 	 */
 	@RequestMapping("/postDelete")
-	public String postDelete(Model model ,@RequestParam(value="post_no")int post_no) {
+	public String postDelete(Model model ,@RequestParam(value="post_no") int post_no
+			,@RequestParam(value="post_board") int post_board) {
 		
 		int postDelete = postService.deletePost(post_no);		
+		
 		// 새로고침 효과
-		List<BoardVo> boardUserList = boardService.boardUserList();
-		model.addAttribute("post_no" ,post_no);
+		List<BoardVo> boardUserList = boardService.boardUserList();		
 		model.addAttribute("boardUserList", boardUserList);
-		
-		return "postDetail";
-		
+		///post/postBoardList?page=1&pageSize=10&board_name=${board.board_name}&board_no=${board.board_no}">${board.board_name}
+		return "redirect:/post/postBoardList?board_no="+post_board+"&page=1&pageSize=10";
 	}
 	
 	/**
@@ -267,14 +302,19 @@ public class PostController {
 	 * ********************* 아직 구현하지 못했음.********************************
 	 */
 	@RequestMapping(value="/postSearch",method=RequestMethod.GET)
-	public String postSearch() {
+	public String postSearch(Model model, PostVo postVo , PageVo pageVo ,@RequestParam(value="post_board") int post_board
+			,@RequestParam(value="board_name") String board_name, @RequestParam(value="post_no") int post_no
+			, @RequestParam(value="searchText") String searchText) {
 		
-		return"";
+		pageVo.setSearchText(searchText);
+		Map<String, Object> resultMap = postService.postBoardList(pageVo);
+		
+		return "redirect:/post/postBoardList?page=1&pageSize=10&board_no="+post_board+"&searchText="+searchText;
 	}
 	/******************************************************************************/
 	
 	/**
-	 * Method : postComment
+	 * Method : postCommentW
 	 * 작성자 : pc07
 	 * 변경이력 :
 	 * @return
@@ -284,13 +324,6 @@ public class PostController {
 	public String postCommentView(Model model ,PostVo postVo 
 										,@RequestParam(value="post_pid")int post_pid
 										,@RequestParam(value="post_no")int post_no) {
-		
-		System.out.println("01 " + postVo.getPost_no());
-		System.out.println("02 " + postVo.getPost_board());
-		System.out.println("03 " + postVo.getPost_context());
-		System.out.println("04" + postVo.getPost_pid());
-		System.out.println("05 " + postVo.getPost_rmv());
-		System.out.println("06 " + postVo.getPost_title());
 		
 		model.addAttribute("post_pid",post_pid);
 		return "postCommNew";
@@ -308,16 +341,9 @@ public class PostController {
 	public String postComment(PostVo postVo, Model model,
 								@RequestParam(value="post_no")int post_no,
 							    @RequestParam(value="post_pid")int post_pid) {
-		System.out.println("1 " + postVo.getPost_no());
-		System.out.println("2 " + postVo.getPost_board());
-		System.out.println("3 " + postVo.getPost_context());
-		System.out.println("4" + postVo.getPost_pid());
-		System.out.println("5 " + postVo.getPost_rmv());
-		System.out.println("6" + postVo.getPost_title());
 		
 		int insertcomment = postService.insertPost(postVo);
-		System.out.println("insertcomm");
-		
+	
 		// 새로고침 효과 
 		List<BoardVo> boardUserList = boardService.boardUserList();
 		model.addAttribute("boardUserList", boardUserList);

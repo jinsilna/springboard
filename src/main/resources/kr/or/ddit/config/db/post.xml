@@ -51,14 +51,18 @@
 		select *  from (
 			select rownum rnum , a.*
 			from
-			(SELECT post_no, LPAD('　L', 3*(LEVEL-1),'　') || post_titlel,
+			(SELECT post_no, LPAD('　▶', 3*(LEVEL-1),'　') || post_title post,
 			post_title, post_context, post_rmv, post_date, post_board, post_pid, userid
 			FROM post
 			where post_board = #{board_no}
 			START WITH post_pid IS NULL
 			CONNECT BY
 			PRIOR post_no = post_pid) a) 
-		where rnum between #{page}*#{pageSize}-(#{pageSize}-1) and (#{page}*#{pageSize})
+		where rnum between #{page}*#{pageSize}-(#{pageSize}-1) 
+		and (#{page}*#{pageSize})
+		<if test="searchText!=null">
+		and post_title like '%'||#{searchText}||'%'
+		</if>
 	</select>
 
 	<!-- 게시글 번호에 따른 하나의 게시글 정보 조회 : 상세정보 -->

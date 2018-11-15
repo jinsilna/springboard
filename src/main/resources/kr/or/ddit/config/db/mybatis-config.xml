@@ -10,12 +10,14 @@
 	  <typeAlias type="kr.or.ddit.post.model.PostVo" alias="postVo"/>
 	  <typeAlias type="kr.or.ddit.util.model.PageVo" alias="pageVo"/>
 	  <typeAlias type="kr.or.ddit.commentary.model.CommentaryVo" alias="commentaryVo"/>
+	  <typeAlias type="kr.or.ddit.attach.model.AttachVo" alias="attachVo"/>
 	</typeAliases>
 	  <mappers>
 	    <mapper resource="kr/or/ddit/config/db/user.xml"/>
 	    <mapper resource="kr/or/ddit/config/db/board.xml"/>
 	    <mapper resource="kr/or/ddit/config/db/post.xml"/>
 	    <mapper resource="kr/or/ddit/config/db/commentary.xml"/>
+	    <mapper resource="kr/or/ddit/config/db/attach.xml"/>
 	  </mappers>
 </configuration>
 
