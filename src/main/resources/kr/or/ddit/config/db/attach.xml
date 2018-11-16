@@ -8,7 +8,7 @@
  <!-- 첨부파일 등록하기  -->
 	<insert id="insertFile" parameterType="attachVo">
 		insert into attachments
-		values(attach_no_SEQ.NEXTVAL,#{attach_name}, #{attach_post})	
+		values(attach_no_SEQ.NEXTVAL,#{attach_name}, post_no_SEQ.CURRVAL)
 	</insert>
 	
 <!-- 첨부파일 수정하기  -->	
@@ -23,4 +23,5 @@
 		select * from attachments
 		where attach_post = #{post_no}
 	</select>
+
 </mapper>	

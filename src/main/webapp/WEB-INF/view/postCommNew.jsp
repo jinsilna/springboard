@@ -99,8 +99,7 @@
 	
 </script>
 <body>
-
-		 <div class="freewritenew_wrap">
+	 <div class="freewritenew_wrap">
 			<h2> 답글작성 </h2>
 			<hr>
 		<form action="/post/postComment" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
@@ -117,7 +116,7 @@
 			<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
 			<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />
 			</form>
-			</div>
+	</div>
 </head>
 </body>
 

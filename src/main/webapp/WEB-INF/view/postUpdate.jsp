@@ -101,23 +101,25 @@
 </script>
 
 </head>
-<body>	
-			
-			 <div class="freewritenew_wrap">
-				<h2> 수정 </h2>
+	 <div class="freewritenew_wrap">
+		<h2> 수정 </h2>
+			<hr>
+		<form action="/post/postUpdate" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
+			<span>제목 : 　</span> 
+				<input type ="hidden" id ="post_no" name ="post_no" value="${postVo.post_no}"/>
+				<input type="text" id="post_title" name="post_title" value= "${postVo.post_title }"/>
 				<hr>
-			<form action="/post/postUpdate" method="post" id="frm"> <!-- enctype="multipart/form-data" -->
-				<span>제목 : 　</span> 
-					<input type ="hidden" id ="post_no" name ="post_no" value="${postVo.post_no}"/>
-					<input type="text" id="post_title" name="post_title" value= "${postVo.post_title }"/>
-				<hr>
-				<div id="fileDiv">
-					<input type="file" class="fileInput" id="inputId" name="postFile"  />
-				</div><br> 	
+		<c:forEach items="${attList}" var="att">
+			<div id="fileDiv">
+					<input type="text" name="attach_name" value="${att.attach_name}"/>
+				<input type="file" class="fileInput" id="inputId" name="postFile" />
+			</div>
+		</c:forEach>
+			<br> 	
 				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"> "${postVo.post_context }"</textarea>
 				<hr>
-				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="수정 저장" />
-				</form>
+			<input type="submit" id="savebutton" class="btn btn-default pull-right" value="수정 저장" />
+		</form>
 	</div>
 </head>
 </body>

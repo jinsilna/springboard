@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,14 +106,18 @@
 			<form action="/post/postNewSave" method="post" id="frm" enctype="multipart/form-data">  
 				<span>제목 : 　</span> 
 					<input type="text" id="post_title" name="post_title" />
-					<input type="hidden" name="post_no" value="${post_no}"/>
 					<input type="hidden" name="userId" value="${userVo.userId}"/>
-					<input type="hidden" name="post_board" value="${post_board}"/>
+					<input type="hidden" name="post_board" value="${post_board}"/>					
 					<input type="hidden" name="attach_name" value="${attachVo.attach_name}"/>
+					<input type="hidden" name="board_name" value="${boardVo.board_name}"/>
+					<input type="hidden" name="attach_post" value="${post_no}"/>
 				<hr>
-				<div id="fileDiv">
-					<input type="file" class="fileInput" id="inputId" name="attach_name" />
-				</div><br> 	
+				<c:forEach begin="1" end="3">	
+					<div id="fileDiv">
+						<input type="file" class="fileInput" id="inputId" name="attach_name"/>
+					</div>
+				</c:forEach>	
+					<br> 	
 				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
 				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />
 				</form>

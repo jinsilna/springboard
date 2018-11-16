@@ -139,6 +139,7 @@
 		</c:forEach> --%>
 		<form  id = "frm" action="/post/postNew" method="get">
 			<input type="hidden"  id="board_no" name="board_no" value="${board_no}">
+	<input type = "hidden" id = "post_no" name = "post_no" value="${post_no}"/>
 			<input type="submit" class="btn btn-default pull-right" value="새글작성">
 		</form>
 
@@ -161,18 +162,17 @@
   				 	</li>  --%>
 			 </ul>
 	    </div>
-				
-					<!--  검색 기능  -->
-					 <form class = "search" action="/post/postSearch" method="POST">
-						<div>
-							<label> 제목 </label>　　
-							<input type="text" id="searchText" name ="searchText" value="${searchText}">
-							<input type = "hidden" id = "post_no" name = "post_no" value="${postVo.post_no}"/>
-							<input type = "hidden" id = "board_no" name = "board_no" value="${boardVo.board_no}"/>
-							<input type = "hidden" id = "board_name" name = "board_name" value="${board_name}"/>
-							<button type="submit" class="btn btn-default">검색하기</button>  
-						</div>
-					 </form> 
-				</div>
+		<!--  검색 기능  -->
+		 <form class = "search" action="/post/postSearch" method="POST">
+			<div>
+				<label> 제목 </label>　　
+				<input type="text" id="searchText" name ="searchText" value="${searchText}">
+				<input type = "hidden" id = "post_no" name = "post_no" value="${postVo.post_no}"/>
+				<input type = "hidden" id = "board_no" name = "board_no" value="${boardVo.board_no}"/>
+				<input type = "hidden" id = "board_name" name = "board_name" value="${board_name}"/>
+				<button type="submit" class="btn btn-default">검색하기</button>  
+			</div>
+		 </form> 
+	</div>
 </body>
 </html>
