@@ -71,11 +71,11 @@
 					html += "<tr class='userClick'>";
 					html += "<td>"+post.rnum+"</td>";
 					html += "<td>"+post.post_no+"</td>";
-					if(post.post_rmv=='Y'){
-					html += "<td class ='delete'>"+"삭제된 글입니다."+"</td>"; 
- 					}else{						 
-					html += "<td>"+post.post+"</td>";						
-					 }
+						if(post.post_rmv=='Y'){
+							html += "<td class ='delete'>"+"삭제된 글입니다."+"</td>"; 
+ 						}else{						 
+							html += "<td>"+post.post+"</td>";						
+						 }
 					html += "<td>"+post.userId+"</td>";
 					html += "<td>"+post.formattedDate+"</td>";
 					html += "</tr>";

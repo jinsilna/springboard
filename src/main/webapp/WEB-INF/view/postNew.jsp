@@ -108,9 +108,10 @@
 					<input type="hidden" name="post_no" value="${post_no}"/>
 					<input type="hidden" name="userId" value="${userVo.userId}"/>
 					<input type="hidden" name="post_board" value="${post_board}"/>
+					<input type="hidden" name="attach_name" value="${attachVo.attach_name}"/>
 				<hr>
 				<div id="fileDiv">
-					<input type="file" class="fileInput" id="inputId" name="profilePic" />
+					<input type="file" class="fileInput" id="inputId" name="attach_name" />
 				</div><br> 	
 				<textarea name="post_context" id="post_context" rows="10" cols="100" style="width: 766px; height: 412px;"></textarea>
 				<input type="submit" id="savebutton" class="btn btn-default pull-right" value="등록" />

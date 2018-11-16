@@ -77,9 +77,9 @@
 	<hr>
 	<div class="form-group">
 		<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
-		<c:forEach items="${attachList}" var="attach">
-			<%-- <label class="control-label">${attach.attach_name}</label> --%> 
-			<a href="${attach.attach_name}">${attach.attach_name}</a>
+		 <c:forEach items="${attachList}" var="attach"> 
+		 <label class="control-label">${attach.attach_name}</label> 
+			<a>${attachVo.attach_name}</a>
 			<br>
 		</c:forEach>
 		<div class="col-sm-10">

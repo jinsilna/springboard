@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -180,41 +181,46 @@ public class PostController {
 	 * 
 	 */
 	@RequestMapping(value="/postNewSave",method=RequestMethod.POST)
-	public String postNewSave(PostVo postVo , Model model, @RequestPart("profilePic") MultipartFile part
-			, AttachVo attachVo, HttpServletRequest request) throws UnsupportedEncodingException {
+	public String postNewSave(PostVo postVo , Model model, @RequestPart("attach_name") List<MultipartFile> parts,
+			 @RequestPart("post_no") int post_no , HttpServletRequest request) throws UnsupportedEncodingException {
 		
 		int insertpost = postService.insertPostNo(postVo);
-		
-		// 파일 업로드 부분 
-			try {
-				if(part.getSize()>0) {
-					String path = request.getServletContext().getRealPath("/profile");
-					
-					String attach_name = part.getOriginalFilename();
-					
-					part.transferTo(new File(path + File.separator + attach_name));
-								
-					// profile
-					attachVo.setAttach_name("/profile/" + attach_name);
-				}else {
-					attachVo.setAttach_name("");
+		int attach_post = postVo.getPost_no();
+	
+
+		for(MultipartFile part : parts) {
+
+			String path = "D:\\A_TeachingMaterial\\8.upload";
+			String fileName = UUID.randomUUID().toString();
+			String originalFileName = part.getOriginalFilename();
+			
+			if(!(part.getSize() == 0 || part.isEmpty() || part.getOriginalFilename().equals(""))) {
+				
+				AttachVo attachVo = new AttachVo();
+				attachVo.setAttach_name("/files/" + fileName);
+				attachVo.setAttach_name(originalFileName);
+				attachVo.setAttach_post(attach_post);
+				
+				File file = new File(path + File.separator + fileName);
+				
+				try {
+					part.transferTo(file);
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
 				}
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				
+				int result = attachService.insertFile(attachVo);
 			}
 			
-			
-			
-		int insertfile = attachService.insertFile(attachVo);
-
-		
+		}
 		// 새로고침 효과 
 		List<BoardVo> boardUserList = boardService.boardUserList();
 		model.addAttribute("boardUserList", boardUserList);
 		
-		return "postDetail";
+		List<AttachVo> attachList = attachService.selectAttachment(attach_post);
+		model.addAttribute("attachList",attachList);
+				
+		return "redirect:/post/detail?post_no="+post_no;
 	}
 	
 	/**
