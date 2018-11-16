@@ -52,8 +52,8 @@ public class CommentaryService implements CommentaryServiceInf{
 	 * Method 설명 : 댓글 삭제 
 	 */
 	@Override
-	public int deleteComment(int comm_post) {
-		return commentaryDao.deleteComment(comm_post);
+	public int deleteComment(int comm_no) {
+		return commentaryDao.deleteComment(comm_no);
 	}
 
 }

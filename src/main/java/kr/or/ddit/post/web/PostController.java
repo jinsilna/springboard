@@ -1,5 +1,6 @@
 package kr.or.ddit.post.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -14,7 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.or.ddit.attach.model.AttachVo;
 import kr.or.ddit.attach.service.AttachServiceInf;
 import kr.or.ddit.board.model.BoardVo;
 import kr.or.ddit.board.service.BoardServiceInf;
@@ -176,12 +180,12 @@ public class PostController {
 	 * 
 	 */
 	@RequestMapping(value="/postNewSave",method=RequestMethod.POST)
-	public String postNewSave(PostVo postVo , Model model,/* @RequestPart("profilePic") MultipartFile part
-			, AttachVo attachVo,*/HttpServletRequest request) throws UnsupportedEncodingException {
+	public String postNewSave(PostVo postVo , Model model, @RequestPart("profilePic") MultipartFile part
+			, AttachVo attachVo, HttpServletRequest request) throws UnsupportedEncodingException {
 		
 		int insertpost = postService.insertPostNo(postVo);
 		
-		/*// 파일 업로드 부분 
+		// 파일 업로드 부분 
 			try {
 				if(part.getSize()>0) {
 					String path = request.getServletContext().getRealPath("/profile");
@@ -199,11 +203,11 @@ public class PostController {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}*/
+			}
 			
 			
 			
-		//int insertfile = attachService.insertFile(attachVo);
+		int insertfile = attachService.insertFile(attachVo);
 
 		
 		// 새로고침 효과 

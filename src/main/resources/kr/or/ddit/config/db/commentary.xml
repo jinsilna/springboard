@@ -21,6 +21,6 @@
 	<update id="deleteComment" parameterType="int">
 		update commentary
 		set comm_rmv ='Y'
-		where comm_post = #{comm_post}
+		where comm_no = #{comm_no}
 	</update>
 </mapper>

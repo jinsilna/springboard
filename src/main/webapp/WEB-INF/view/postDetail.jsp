@@ -50,6 +50,9 @@
 	float: left;
 	margin-right: 10px;
 }
+.commtable{
+	text-align: center;
+}
 </style>
 
 </head>
@@ -98,44 +101,6 @@
 	</div>
 </form>
 
-	
-	<%-- 
-		<!-- <label for="pass" class="col-sm-2 control-label">댓글</label> -->
-		 상세 구현 계획 : 댓글이 달린만큼 라벨로 댓글 띄워주기
-	<c:if test="${post.post_rmv =='Y'}">
-	<tr>
-		<td>${post.rnum}</td>
-		<td colspan="4" class ="removePost">삭제된 글입니다.</td>	
-	</tr>
-	--%>
-<table>
-	<c:forEach items="${commList}" var="comm">	
-		<c:if test="${comm.comm_rmv !='Y'}">	
-				
-				<tr>
-				<td class="control-label" id="commens"> * 댓글 내용 : ${comm.comm_context} || 
-						<form action="/commentary/commentaryDelete" method="post">	
-						<input type="text" name="comm_post" value="${comm_post}">
-						<input type="hidden" name="post_no" value="${post_no}">
-						<input type="hidden" name="comm_user" value="${comm_user}">
-						<input type="submit" id="commdelete" value ="댓글삭제" class="btn btn-default"/><br>
-						</form>
-					</td> 
-					<td class="control-label" id="commens"> * 작성자 : ${comm.comm_user}</td>　
-				</tr>
-		</c:if>	
-			<c:if test="${comm.comm_rmv =='Y'}">	
-			<tr>
-				<td class="control-label" id="commens"> 삭제된 댓글입니다..</td> 
-			</tr>
-		</c:if>
-	</c:forEach> 
-</table>	
-	<hr>
-	<br>
-
-</div>	
-
 	<div class="form-group">
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
@@ -162,9 +127,34 @@
 					<button type="submit" class="btn btn-default">답글</button>
 				</form>
 			</div>
-		</div>
-		<div class="col-sm-10"></div>
-	</div>
-
+	<table class = "commtable" >
+		<c:forEach items="${commList}" var="comm">	
+			<c:if test="${comm.comm_rmv =='N'}">
+					<tr>
+					<td class="control-label" id="commens"> * 댓글 내용 : ${comm.comm_context} 
+							<form action="/commentary/commentaryDelete" method="post">	
+							<input type="hidden" name="comm_post" value="${comm.comm_post}"> 
+							<input type="hidden" name="post_no" value="${postVo.post_no}"> 
+							<input type="hidden" name="comm_user" value="${comm.comm_user}">
+							<input type="hidden" name="comm_no" value="${comm.comm_no}">
+							<label class="control-label" id="commens"> * 작성자 : ${comm.comm_user}</label>　
+							<%-- <c:if test="${userVo.userId==postVo.userId}"> --%>
+								<input type="submit" id="commdelete" value ="댓글삭제" class="btn btn-default"/><br>
+							<%-- </c:if> --%>
+							<hr>
+							</form>
+						</td> 
+					</tr>
+			</c:if>	
+			<c:if test="${comm.comm_rmv =='Y'}">	
+				<tr>
+					<td class="control-label" id="commens"> 삭제된 댓글입니다..</td> 
+				</tr>
+			</c:if>
+		</c:forEach> 
+	</table>	
+</div>
+</div>
+</div>
 </body>
 </html>

@@ -26,7 +26,7 @@ public interface CommentaryDaoInf {
 	 * @return
 	 * Method 설명 : 댓글 삭제 
 	 */
-	public int deleteComment(int comm_post);
+	public int deleteComment(int comm_no);
 	
 	/**
 	 * Method : selectPostComment

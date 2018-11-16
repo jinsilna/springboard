@@ -1,4 +1,4 @@
-
+	
 
 
 package kr.or.ddit.commentary.web;
@@ -48,7 +48,7 @@ public class CommentaryController {
 	 */
 	@RequestMapping(value="/commentaryInsert",method=RequestMethod.POST)
 	public String commentaryInsert(HttpServletRequest request, Model model,CommentaryVo comment, 
-								@RequestParam(value="post_no")int post_no, PostVo postVo) {
+								@RequestParam(value="post_no") int post_no, PostVo postVo) {
 	
 		String comm_context = request.getParameter("comment");
 		String comm_user = request.getParameter("comm_user");
@@ -79,13 +79,23 @@ public class CommentaryController {
 	 * Method 설명 : 댓글 삭제 
 	 */
 	@RequestMapping(value="/commentaryDelete", method=RequestMethod.POST)
-	public String commentaryDelete(HttpServletRequest request, Model model, CommentaryVo comment,
-										@RequestParam(value="comm_post")int comm_post
-										,@RequestParam(value="comm_user")int comm_user) {
-	
+	public String commentaryDelete(HttpServletRequest request, Model model, CommentaryVo comment ,PostVo postVo) {
 		
-		int comm = commentaryService.deleteComment(comm_post);
+		// 새로고침 효과
+		List<BoardVo> boardUserList = boardService.boardUserList();
+		model.addAttribute("boardUserList", boardUserList);
 		
-		return "redirect:/post/postDetail?comm_post="+comm_post;
+		
+		int comm_post = postVo.getPost_no();
+		int post_no = postVo.getPost_no();
+		int comm_no = comment.getComm_no();
+		
+		int comm = commentaryService.deleteComment(comm_no);
+		
+		model.addAttribute("comm_post",comm_post);
+		model.addAttribute("comm_no",comm_no);
+		
+		
+		return "redirect:/post/postDetail?comm_post="+comm_post+"&post_no="+post_no+"&comm_no="+comm_no;
 	}
 }
