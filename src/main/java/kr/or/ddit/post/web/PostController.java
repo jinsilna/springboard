@@ -163,6 +163,7 @@ public class PostController {
 			String fileName = UUID.randomUUID().toString();
 			String originalFileName = part.getOriginalFilename();
 
+			
 			if (!(part.getSize() == 0 || part.isEmpty() || part.getOriginalFilename().equals(""))) {
 
 				attachVo.setAttach_name("/files/" + fileName);

@@ -17,4 +17,11 @@ public class UserService implements UserServiceInf{
 	public UserVo selectUser(String userid){
 		return userDao.selectUser(userid);
 	}
+
+	@Override
+	public int insertUser(UserVo userVo) {
+		return userDao.insertUser(userVo);
+	}
+	
+
 }
